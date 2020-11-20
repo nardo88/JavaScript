@@ -26,7 +26,7 @@ const addExpressArray = addExpress.toLowerCase().split(', ')
 console.log(addExpressArray);
 
 //  - Объявить переменную budgetDay и присвоить дневной бюджет (доход за месяц / 30)
-let budgetDay = 55000 / 30
+let budgetDay = money / 30
 
 // - Вывести в консоль budgetDay
 console.log(budgetDay);
