@@ -1,38 +1,29 @@
-// Пункт 1
-let money = 100000,
-    income = 'фриланс',
-    addExpress = 'бензин, интернет, жена, коммуналка',
-    deposit = true,
-    mission = 999999,
-    period = 3;
+// 1) Создать переменную num со значением 266219 (тип данных число)
+let num = 266219;
 
-// Пункт 2
-// Типы данных
-console.log(typeof money);
-console.log(typeof income);
-console.log(typeof deposit);
-
-// Длина строки
-console.log(addExpress.length);
-
-// Вывести в консоль “Период равен (period) месяцев” и “Цель заработать (mission) рублей/долларов/гривен/юани”
-console.log(`Период равен ${period} месяцев” и “Цель заработать ${mission} рублей/долларов/гривен/юани`);
-
-// Привести строку addExpenses к нижнему регистру и разбить строку на массив, вывести массив в консоль
+// 2) Вывести в консоль произведение (умножение) цифр этого числа
+num = String(num)
 // 1 способ
-console.log(addExpress.toLowerCase().split(', '));
+let result1 = 1
+for (let i = 0; i < num.length; i++){
+    result1 *= Number(num[i])
+}
+console.log(result1);
+
 // 2 способ
-const addExpressArray = addExpress.toLowerCase().split(', ')
-console.log(addExpressArray);
+let result2 = 1
+for(item of num){
+    result2 *= item
+}
+console.log(result2);
 
-//  - Объявить переменную budgetDay и присвоить дневной бюджет (доход за месяц / 30)
-let budgetDay = 55000 / 30
 
-// - Вывести в консоль budgetDay
-console.log(budgetDay);
+// возвести в степень - 3
+result1 = result1**3
+console.log(result1);
 
-// число не красивое, округлим
-console.log(Math.floor(budgetDay));
+// Вывести на экран первые 2 цифры полученного числа
+console.log(String(result1).substring(0, 2));
 
 
 // Ошибок в консоли нет!
