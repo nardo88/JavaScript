@@ -1,7 +1,8 @@
 // первое задание ==============================================================================
+
+
 const ru = ['Воскресение', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
 const en = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const date = new Date()
 
 
 
@@ -10,12 +11,10 @@ const date = new Date()
 const setNameDayWithIf = () => {
     let lang = prompt('введите идентификатор языка (ru / en) / enter language id (ru / en)')
     if (lang === 'en'){
-
-        alert('today is ' + en[date.getDay()]);
-
+        console.log(en);
     } else if (lang === 'ru'){
 
-        alert('сегодня ' + ru[date.getDay()]);
+        console.log(ru);
 
     } else if (lang === null){
         setNameDayWithIf()
@@ -30,11 +29,11 @@ const setNameDayWithSwitch = () => {
     let lang = prompt('введите идентификатор языка (ru / en) / enter language id (ru / en)')
     switch (lang){
         case 'en':{
-            alert('today is ' + en[date.getDay()]);
+            console.log(en);
             break
         }
         case 'ru': {
-            alert('сегодня ' + ru[date.getDay()]);
+            console.log(ru);
             break
         }
         default:
@@ -44,22 +43,20 @@ const setNameDayWithSwitch = () => {
 
 
 // через многомерные массивы
-const arrayDays = [ru, en]
-Array.prototype.ru = [...ru]
-Array.prototype.en = [...en]
+const arrayDays = []
+arrayDays.ru = ru
+arrayDays.en = en
+
 
 const setNameDayWithArray = () => {
     let lang = prompt('введите идентификатор языка (ru / en) / enter language id (ru / en)')
-
-    lang ? console.log(arrayDays[lang][date.getDay()]) : setNameDayWithArray()
-    
-
-    
+    console.log(arrayDays[lang]);
+       
 }
 
-setNameDayWithIf()
+// setNameDayWithIf()
 // setNameDayWithSwitch() 
-// setNameDayWithArray()
+setNameDayWithArray()
 
 
 // второе задание ==================================================================================
