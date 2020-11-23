@@ -51,7 +51,7 @@ Array.prototype.en = [...en]
 const setNameDayWithArray = () => {
     let lang = prompt('введите идентификатор языка (ru / en) / enter language id (ru / en)').toLowerCase()
 
-    lang ? console.log(arrayDays[lang][date.getDay()]) : setNameDayWithArray
+    lang ? console.log(arrayDays[lang][date.getDay()]) : setNameDayWithArray()
     
 
     
@@ -59,7 +59,7 @@ const setNameDayWithArray = () => {
 
 // setNameDayWithIf()
 // setNameDayWithSwitch() 
-// setNameDayWithArray()
+setNameDayWithArray()
 
 
 // второе задание ==================================================================================
