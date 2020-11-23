@@ -8,7 +8,7 @@ const date = new Date()
 // через if
 
 const setNameDayWithIf = () => {
-    let lang = prompt('введите идентификатор языка (ru / en) / enter language id (ru / en)')
+    let lang = prompt('введите идентификатор языка (ru / en) / enter language id (ru / en)').toLowerCase()
     if (lang === 'en'){
 
         alert('today is ' + en[date.getDay()]);
@@ -27,7 +27,7 @@ const setNameDayWithIf = () => {
 
 // через switch
 const setNameDayWithSwitch = () => {
-    let lang = prompt('введите идентификатор языка (ru / en) / enter language id (ru / en)')
+    let lang = prompt('введите идентификатор языка (ru / en) / enter language id (ru / en)').toLowerCase()
     switch (lang){
         case 'en':{
             alert('today is ' + en[date.getDay()]);
@@ -49,7 +49,7 @@ Array.prototype.ru = [...ru]
 Array.prototype.en = [...en]
 
 const setNameDayWithArray = () => {
-    let lang = prompt('введите идентификатор языка (ru / en) / enter language id (ru / en)')
+    let lang = prompt('введите идентификатор языка (ru / en) / enter language id (ru / en)').toLowerCase()
 
     lang ? console.log(arrayDays[lang][date.getDay()]) : setNameDayWithArray
     
@@ -59,15 +59,15 @@ const setNameDayWithArray = () => {
 
 // setNameDayWithIf()
 // setNameDayWithSwitch() 
-setNameDayWithArray()
+// setNameDayWithArray()
 
 
 // второе задание ==================================================================================
 const getYourStatus = () => {
-    let namePerson = prompt('Введите имя')
+    let namePerson = prompt('Введите имя').toLowerCase()
 
-    namePerson === 'Артем' ? console.log('директор') 
-        : namePerson === 'Максим' ? console.log('Преподаватель')
+    namePerson === 'артем' ? console.log('директор') 
+        : namePerson === 'максим' ? console.log('Преподаватель')
         : namePerson === '' ? getYourStatus()
         : namePerson === null ? getYourStatus()
         : console.log('Студент'); 
