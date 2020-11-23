@@ -8,7 +8,7 @@ const date = new Date()
 // через if
 
 const setNameDayWithIf = () => {
-    let lang = prompt('введите идентификатор языка (ru / en) / enter language id (ru / en)').toLowerCase()
+    let lang = prompt('введите идентификатор языка (ru / en) / enter language id (ru / en)')
     if (lang === 'en'){
 
         alert('today is ' + en[date.getDay()]);
@@ -27,7 +27,7 @@ const setNameDayWithIf = () => {
 
 // через switch
 const setNameDayWithSwitch = () => {
-    let lang = prompt('введите идентификатор языка (ru / en) / enter language id (ru / en)').toLowerCase()
+    let lang = prompt('введите идентификатор языка (ru / en) / enter language id (ru / en)')
     switch (lang){
         case 'en':{
             alert('today is ' + en[date.getDay()]);
@@ -49,7 +49,7 @@ Array.prototype.ru = [...ru]
 Array.prototype.en = [...en]
 
 const setNameDayWithArray = () => {
-    let lang = prompt('введите идентификатор языка (ru / en) / enter language id (ru / en)').toLowerCase()
+    let lang = prompt('введите идентификатор языка (ru / en) / enter language id (ru / en)')
 
     lang ? console.log(arrayDays[lang][date.getDay()]) : setNameDayWithArray()
     
@@ -57,9 +57,9 @@ const setNameDayWithArray = () => {
     
 }
 
-// setNameDayWithIf()
+setNameDayWithIf()
 // setNameDayWithSwitch() 
-setNameDayWithArray()
+// setNameDayWithArray()
 
 
 // второе задание ==================================================================================
