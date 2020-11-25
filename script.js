@@ -27,8 +27,6 @@ setTypeOf(money)
 setTypeOf(income)
 setTypeOf(deposit)
 
-const addExpressArray = addExpress.toLowerCase().split(', ')
-
 // дневной бюджет
 let budgetDay = money / 30
 
@@ -43,13 +41,11 @@ let expenses = []
 // и получаем сумму обязательных расходов
 const getExpensesMonth = function() {
     let sum = 0
-    let num = 0
+    
 
     for (let i = 0; i < 2; i++){
-       
+        let num
         expenses[i] = prompt('Введите обязательную статью расходов?', 'Детский сад')
-
-        num = prompt('Во сколько это обойдется?')
 
         while ( !isNumber(num)){
             num = prompt('Во сколько это обойдется?')
