@@ -20,5 +20,5 @@ for (let i = 2; i <= 100; i++) {
       if (i % j == 0) continue myMark; 
     }
   
-    console.log(i);
+    console.log(i + ` делится на 1 и на ${i}`);
 }
