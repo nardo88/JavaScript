@@ -1,16 +1,24 @@
-const trimString = (str) => typeof str !== 'string' 
-        ? 'данные не корректны' 
-        : str.length < 30 
-            ? str.trim()
-            : str.trim().substring(0, 30) + '...'
+// Создать массив arr = []
+const arr = []
 
+// — Записать в него 7 любых многозначных чисел в виде строк
+// — Вывести в консоль только те, что начинаются с цифры 2 или 4 (Должны присутствовать в массиве)
 
-console.log(trimString(' строка '));
-console.log(trimString(10));
+for (let i = 0; i < 7; i++){
+    arr[i] =  Math.floor(Math.random() * 1000)
+        if (String(arr[i])[0] == 2 || String(arr[i])[0] == 4  ){
+            console.log( arr[i] )
+        }
+}
 
-let bigStr = '   Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ea repudiandae hic delectus ut eaque eveniet, optio nisi, quod fugit vero ipsum rerum vel. Reprehenderit commodi suscipit laborum facere. Optio voluptatem numquam eligendi iusto eveniet repellat quaerat sunt quis reiciendis quibusdam!   '
+// Вывести в столбик все простые числа от 1 до 100 (сделать при помощи цикла)
+// Рядом с каждым числом написать оба делителя данного числа
+myMark:
+for (let i = 2; i <= 100; i++) { 
 
-console.log(trimString(bigStr));
-
-// проверка
-console.log(trimString(bigStr).length);
+    for (let j = 2; j < i; j++) { 
+      if (i % j == 0) continue myMark; 
+    }
+  
+    console.log(i);
+}
