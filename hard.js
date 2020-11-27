@@ -4,19 +4,25 @@ let weekDays = ['Воскресение', 'Понедельник', 'Вторн�
 
 
 weekDays = weekDays.map((item, i) => {
-    
-    if (item === 'Суббота' || item === 'Воскресение'){
-       return `<li><i>${item}</i></li>`;
+    if (i === date.getDay()){
+        return `<li id="${i}"><b>${item}</b></li>`;
     }
-    if (i === date.getDay() ){
-       return `<li><b>${item}</b></li>`;
-    }
-    return `<li>${item}</li>`;
+    return `<li id="${i}">${item}</li>`;
 })
-
 getSundey = weekDays.shift();
 weekDays.push(getSundey);
 
 weekDays.forEach(item => {
-    list.insertAdjacentHTML('beforeend', item);
+    list.insertAdjacentHTML('beforeend', item)
 })
+
+const items = document.querySelectorAll('li')
+
+items.forEach((item, i) => {
+    console.log(i);
+        if (i === 5 || i === 6){
+            item.classList.add('italic')
+        }
+        
+})
+console.log(date.getDay());
