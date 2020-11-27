@@ -6,9 +6,9 @@ let money;
 
 // получаем общий доход за месяц
 let start = function () {
-    do {
-        money = +prompt('Ваш месячный доход?', 75000);
-    } while (!isNumber(money))
+    while (!isNumber(money)) {
+        money = prompt('Ваш месячный доход?', 75000);
+    } 
 }
 
 start();
@@ -43,9 +43,9 @@ const appData = {
             let value;
             let key = prompt('Введите обязательную статью расходов?', 'Бензин');
 
-            do {
-               value = +prompt('Во сколько это обойдется?', 3000);
-            } while (!isNumber(value)) 
+            while (!isNumber(value))  {
+               value = prompt('Во сколько это обойдется?', 3000);
+            } 
 
             this.expenses[key] = value;
         }
@@ -54,12 +54,11 @@ const appData = {
     // метод получения списка обязательных расходов и 
     //суммы денег на эти расходы за месяц
     getExpensesMonth() {
-        let summ = 0;
 
        for (let key in this.expenses){
-           summ += this.expenses[key];
+            this.expensesMonth += +this.expenses[key];
        }
-        return summ;
+        
     },
     // метод получения цифры: доход минус расход
     getBudget(){
@@ -71,7 +70,7 @@ const appData = {
     },
     //
     getTargetMonth(){
-        return this.mission / this.budget;
+        return this.mission / this.budgetMonth;
     },
     getStatusIncome(){
         if (this.budgetDay >= 1200) {
@@ -90,12 +89,12 @@ const appData = {
 appData.asking();
 
 // получение суммы обязательных расходов за месяц
-appData.expensesAmount = appData.getExpensesMonth();
+appData.getExpensesMonth();
 
 // получение цифры: доход минус расход 
 appData.getBudget();
 
-console.log('сумма всех обязательных расходов за месяц: ' + appData.expensesAmount);
+console.log('сумма всех обязательных расходов за месяц: ' + appData.expensesMonth);
 
 console.log(Math.floor(appData.getTargetMonth()) < 0 ? 'Цель не будет достигнута' : 'цель будет достигнута через ' + Math.floor(appData.getTargetMonth()) + ' месяцев');
 
@@ -104,6 +103,6 @@ appData.getStatusIncome();
 // вывести все ключи объекта appData
 console.log('Наша программа включает в себя данные: ');
 for (let key in appData){
-    console.log('Ключ ' + key + '\n' + 'Значение ' + appData[key]);
+    // console.log('Ключ ' + key + '\n' + 'Значение ' + appData[key]);
 }
 
