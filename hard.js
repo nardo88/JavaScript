@@ -16,7 +16,6 @@ weekDays = weekDays.map((item, i) => {
 
 getSundey = weekDays.shift()
 weekDays.push(getSundey)
-console.log(weekDays);
 
 weekDays.forEach(item => {
     list.insertAdjacentHTML('beforeend', item)
