@@ -11,12 +11,12 @@ weekDays = weekDays.map((item, i) => {
     if (i === date.getDay() ){
        return `<li><b>${item}</b></li>`;
     }
-    return `<li>${item}</li>`
+    return `<li>${item}</li>`;
 })
 
-getSundey = weekDays.shift()
-weekDays.push(getSundey)
+getSundey = weekDays.shift();
+weekDays.push(getSundey);
 
 weekDays.forEach(item => {
-    list.insertAdjacentHTML('beforeend', item)
+    list.insertAdjacentHTML('beforeend', item);
 })
