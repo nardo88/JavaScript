@@ -1,16 +1,23 @@
 const list = document.querySelector('.list');
 const date = new Date();
-const weekDays = ['Воскресение', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота' ];
+let weekDays = ['Воскресение', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота' ];
 
-weekDays.forEach((item, i) => {
-    let listItem = `<li>${item}</li>`;
+
+weekDays = weekDays.map((item, i) => {
+    
     if (item === 'Суббота' || item === 'Воскресение'){
-        listItem = `<li><i>${item}</i></li>`;
+       return `<li><i>${item}</i></li>`;
     }
     if (i === date.getDay() ){
-        listItem = `<li><b>${item}</b></li>`;
+       return `<li><b>${item}</b></li>`;
     }
-
-    list.insertAdjacentHTML('beforeend', listItem);
+    return `<li>${item}</li>`
 })
 
+getSundey = weekDays.shift()
+weekDays.push(getSundey)
+console.log(weekDays);
+
+weekDays.forEach(item => {
+    list.insertAdjacentHTML('beforeend', item)
+})
