@@ -3,7 +3,7 @@ let isNumber = function (n) {
 }
 
 let isString = (str) => {
-    if (!parseFloat(str) && str !== '' && str !== null){
+    if (!parseFloat(str) && str !== null && str.trim() !== ''){
         return true
     } else {
         return false
