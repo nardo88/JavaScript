@@ -1,177 +1,99 @@
+// 1) Выведите на страницу текущую дату и время в 2-х форматах: 
+//     a) 'Сегодня Вторник, 4 февраля 2020 года, 21 час 5 минут 33 секунды'  
+//     б) '04.02.2020 - 21:05:33' 
+// 2) Для вывода в формате (а) напишите функцию, которая будет менять склонение слов в зависимости от числа, "час, часов, часа"
+// 3) Для вывода в формате (б) напишите функцию, которая будет добавлять 0 перед значениями которые состоят из одной цифры (из 9:5:3  1.6.2019 сделает 09:05:03 01.06.2019)
+// 4) С помощью функции setInterval, реализуйте обновление даты и времени каждую секунду 
 
 
-let isNumber = function (n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
-}
+const a = document.querySelector('.a')
+const b = document.querySelector('.b')
 
-let isString = (str) => {
-    if (!parseFloat(str) && str !== null && str.trim() !== ''){
-        return true
-    } else {
-        return false
-    }
-}
 
-let money;
 
-// получаем общий доход за месяц
-let start = function () {
-    while (!isNumber(money)) {
-        money = prompt('Ваш месячный доход?', 75000);
-    } 
-}
 
-start();
 
-// создание объекта
-const appData = {
-    income: {},
-    addIncome: [],
-    expenses: {},
-    // добавление обязательных расходов
-    addExpenses: [],
-    // есть ли депозит в банке
-    deposit: false,
-    // процент депозита
-    percentDeposit: 0,
-    moneyDeposit: 0,
-    // цель - накопить лям
-    mission: 1000000,
-    // за какой период хотим достигнуть цели
-    period: 3,
-    // месячный доход
-    budget: money,
-    // дневной бюджет
-    budgetDay: 0,
-    // бюджет на месяц
-    budgetMonth: 0,
-    // месячные затраты
-    expensesMonth: 0,
+const getDateForA = () => {
+    let date = new Date()
+    let  options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long',
+        timezone: 'UTC',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+    };
 
+    let str = date.toLocaleString("ru", options)
+    let data = str.split(', ')
+    let dateNow = data[1].replace('г.', 'года')
+
+    let hour = date.getHours()
+    let minutes = date.getMinutes()
+    let seconds = date.getSeconds()
+    let hourName;
+    let minutesName;
+    let secondsName;
     
-    asking() {
-
-        if (confirm('Есть ли у вас дополнительный источник заработка?')){
-            let itemIncome;
-            let cashIncome;
-            do {
-                itemIncome = prompt('Какой у вас дополнительный заработок?', 'таксую');
-            } while (!isString(itemIncome))
-
-            
-            do {
-                cashIncome = prompt('Сколько в месяц вы на этом зарабатываете?', 10000);
-            }while (!isNumber(cashIncome))
-
-            this.income[itemIncome] = cashIncome;
-        }
-
-
-        // здесь спросили про депозит в банке
-        appData.deposit = confirm('Есть ли у вас депозит в банке?');
-        // обязательные расходы
-        for (let i = 0; i < 2; i++) {
-            let value;
-            let key;
-
-            // проверяем что статья расхода - строка
-            do {
-                key = prompt('Введите обязательную статью расходов?', 'Бензин');
-            } while (!isString(key))
-
-            
-            
-            while (!isNumber(value))  {
-               value = prompt('Во сколько это обойдется?', 3000);
-            } 
-
-            this.expenses[key] = value;
-            // заполняем массив addExpenses
-            this.addExpenses.push(key)
-        }
-        
-    },
-    // метод получения списка обязательных расходов и 
-    //суммы денег на эти расходы за месяц
-    getExpensesMonth() {
-
-       for (let key in this.expenses){
-            this.expensesMonth += +this.expenses[key];
-       }
-        
-    },
-    // метод получения цифры: доход минус расход
-    getBudget(){
-        // получаем месячный бюджет
-        this.budgetMonth = this.budget - this.expensesMonth;
-        // получаем дневной бюджет
-        this.budgetDay = this.budgetMonth / 30;
-       
-    },
-    //
-    getTargetMonth(){
-        return this.mission / this.budgetMonth;
-    },
-    getStatusIncome(){
-        if (this.budgetDay >= 1200) {
-            console.log('У вас высокий уровень дохода');
-        } else if (this.budgetDay < 1200 && this.budgetDay > 600) {
-            console.log('У вас средний уровень дохода');
-        } else if (this.budgetDay <= 600) {
-            console.log('К сожалению у вас уровень дохода ниже среднего');
-        } else if (this.budgetDay <= 0) {
-            console.log('Что то пошло не так! Проверьте нет ли под окном коллекторов!');
-        }
-    },
-    getInfoDeposit(){
-        if (this.deposit){
-
-            do {
-                this.percentDeposit = prompt('Какой годовой процент?', '10')
-            } while(!isNumber(this.percentDeposit))
-
-            do {
-                this.moneyDeposit = prompt('Какая сумма заложена?', 10000)
-            } while(!isNumber( this.moneyDeposit))
-            
-        }
-    },
-    calcSavedMoney(){
-       return this.budgetMonth * this.period
-    },
-    getExpenses(){
-        this.addExpenses = this.addExpenses.map(item => {
-            let newItem = item.toLowerCase();
-            let a = newItem.slice(0, 1).toUpperCase();
-            let b = newItem.slice(1);
-            return a + b;
-          
-        });
-        console.log(this.addExpenses.join(', '));
+    if (hour === 1 || hour === 21){
+        hourName = 'час'
+    } else if ( hour >= 2 && hour < 5){
+        hourName = 'часа'
+    } else if ( hour >= 5 && hour < 21){
+        hourName = 'часов'
+    } else if(hour > 22 && hour <= 24){
+        hourName = 'часа'
     }
 
+    let im = [1]
+    let mn = [0, 5, 6, 7, 8, 9]
+    let rod = [2, 3, 4]
+
+    if (im.includes(minutes%10)){
+        minutesName = 'минута'
+    } else if (mn.includes(minutes%10)){
+        minutesName = 'минут'
+    } else if (rod.includes(minutes%10)){
+        minutesName = 'минуты'
+    }
+
+    if (im.includes(seconds%10)){
+        secondsName = 'секунда'
+    } else if (mn.includes(seconds%10)){
+        secondsName = 'секунд'
+    } else if (rod.includes(seconds%10)){
+        secondsName = 'секунды'
+    }
+
+
+    return `Сегодня ${data[0]}, ${dateNow}, ${hour} ${hourName} ${minutes} ${minutesName} ${seconds} ${secondsName}`
 }
 
-appData.asking();
-
-// получение суммы обязательных расходов за месяц
-appData.getExpensesMonth();
-
-// получение цифры: доход минус расход 
-appData.getBudget();
-
-console.log('сумма всех обязательных расходов за месяц: ' + appData.expensesMonth);
-
-console.log(Math.floor(appData.getTargetMonth()) < 0 ? 'Цель не будет достигнута' : 'цель будет достигнута через ' + Math.floor(appData.getTargetMonth()) + ' месяцев');
-
-appData.getStatusIncome();
-
-// вывести все ключи объекта appData
-console.log('Наша программа включает в себя данные: ');
-for (let key in appData){
-    // console.log('Ключ ' + key + '\n' + 'Значение ' + appData[key]);
+const  getDateForB = () => {
+    let date = new Date()
+    let  options = {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+    };
+    let str = date.toLocaleString("ru", options)
+    
+   return str.split(', ').join(' - ')
 }
-appData.getInfoDeposit()
-console.log(appData.percentDeposit, appData.moneyDeposit, appData.calcSavedMoney());
 
-appData.getExpenses()
+const setDateA = () => {
+    a.innerHTML = getDateForA()
+}
+
+const setDateB = () => {
+    b.innerHTML = getDateForB()
+}
+
+let timeIntervalForA = setInterval(setDateA, 1000)
+let timeIntervalForB = setInterval(setDateB, 1000)
+
