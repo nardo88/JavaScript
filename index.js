@@ -12,17 +12,20 @@ const depositCheck = document.querySelector('#deposit-check');
 const additionalIncomeItems = document.querySelectorAll('.additional_income-item');
 
 // Каждый элемент в правой части программы через класс(не через querySelector), которые имеют в имени класса "-value", начиная с class="budget_day-value" и заканчивая class="target_month-value">
-// в задании не сказано каждый элементв  отдельную переменную
-// первый вариант
-const inputs = document.getElementsByTagName('input')
-const inputsValue = []
-for (let item of inputs){
-    if(item.className.includes('-value')){
-        inputsValue.push(item)
-    }
-}
-// второй вариант так как все элементы в право части имеют общий класс result-total
-const inputValue = document.getElementsByClassName('result-total')
+// доход за месяц 
+const budgetMonth = document.getElementsByClassName('result-total')[0]
+// Дневной бюджет
+const budgetDay = document.getElementsByClassName('result-total')[1]
+// Расход за месяц
+const expensesMonth = document.getElementsByClassName('result-total')[2]
+// Возможные доходы
+const additionalIncome = document.getElementsByClassName('result-total')[3]
+// Возможные расходы
+const additionalExpenses = document.getElementsByClassName('result-total')[4]
+// Накопления за период
+const incomePeriod = document.getElementsByClassName('result-total')[5]
+// Срок достижения цели в месяцах
+const targetMonth = document.getElementsByClassName('result-total')[6]
 
 // Оставшиеся поля через querySelector каждый в отдельную переменную:
 // оставшиеся поля в правой части? там 7 полей и все имеют -value
