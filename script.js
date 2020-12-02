@@ -40,4 +40,4 @@ const listItems6 = books[2].children[1]
 const liFor6 = document.createElement('li');
 liFor6.classList.add('chapter');
 liFor6.textContent = 'Глава 8: За пределами ES6';
-listItems6.insertAdjacentElement('beforeend', liFor6)
+listItems6.children[8].after(liFor6)
