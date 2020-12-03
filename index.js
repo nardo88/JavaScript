@@ -32,7 +32,7 @@ const targetMonth = document.getElementsByClassName('result-total')[6];
 // поля ввода (input) с левой стороны и не забудьте про range.
 // поля возможных доходов и checkbox мы получили ранее 
 const salaryAmount = document.querySelector('.salary-amount');
-const incomeTitle = document.querySelector('input.income-title');
+const incomeTitle = document.querySelectorAll('input.income-title');
 const expensesTitle = document.querySelector('input.expenses-title');
 const incomeAmount = document.querySelector('.income-amount');
 const expensesAmount = document.querySelector('.expenses-amount');
@@ -50,7 +50,8 @@ let isNumber = function (n) {
 }
 
 let isString = (str) => {
-    if (!parseFloat(str) && str !== null && str.trim() !== '') {
+    // добавил регулярное выражение для проверки символов кириллицы
+    if (!parseFloat(str) && str !== null && str.trim() !== '' && /[А-Я-\s-,-.-:-;]$/i.test(str)) {
         return true
     } else {
         return false
@@ -100,8 +101,20 @@ const appData = {
     // добавление дополнительных полей обязательных расходров
     addExpensesBlock() {
         let cloneExpensesItem = expensesItems[0].cloneNode(true);
+        // очищаем поля input у клона
+        cloneExpensesItem.children[0].value = '';
+        cloneExpensesItem.children[1].value = '';
+
         expensesItems[0].parentNode.insertBefore(cloneExpensesItem, plusExpensis);
         expensesItems = document.querySelectorAll('.expenses-items');
+        
+         // запрет на ввод не корректных значений значений
+         expensesItems.forEach(item => {
+            item.children[0].addEventListener('input', checkInputString)
+            item.children[1].addEventListener('input', checkInputNumber)
+        })
+
+
         if (expensesItems.length === 3) {
             plusExpensis.style.display = 'none';
         }
@@ -109,11 +122,24 @@ const appData = {
     // добавление дополнительных полей доходов
     addIncomeBlock() {
         let cloneIncomeItems = incomeItems[0].cloneNode(true);
+        // очищаем поля input у клона
+        cloneIncomeItems.children[0].value = '';
+        cloneIncomeItems.children[1].value = '';
+
         incomeItems[0].parentNode.insertBefore(cloneIncomeItems, plusIncome);
         incomeItems = document.querySelectorAll('.income-items');
+
+        // запрет на ввод не корректных значений значений
+        incomeItems.forEach(item => {
+            item.children[0].addEventListener('input', checkInputString)
+            item.children[1].addEventListener('input', checkInputNumber)
+        })
+
         if (incomeItems.length === 3) {
             plusIncome.style.display = 'none';
         }
+
+        
     },
     // получение перечня обязательных расходов
     getExpenses() {
@@ -247,3 +273,38 @@ periodSelect.addEventListener('input', () => {
 })
 plusExpensis.addEventListener('click', appData.addExpensesBlock)
 plusIncome.addEventListener('click', appData.addIncomeBlock)
+
+
+//==========================================================================
+// проверка на число
+function checkInputNumber (){
+    if (!isNumber(this.value)){
+        alert('Здесь необходимо вводить число');
+        this.value = '';
+    } 
+}
+
+salaryAmount.addEventListener('input', checkInputNumber)
+targetAmount.addEventListener('input', checkInputNumber)
+incomeAmount.addEventListener('input', checkInputNumber)
+expensesAmount.addEventListener('input', checkInputNumber)
+
+function checkInputString (){
+    if (!isString(this.value)){
+        alert('Здесь необходимо вводить строчное значение на русском языке');
+        this.value = '';
+    } 
+}
+
+incomeTitle.forEach(item => {
+    item.addEventListener('input', checkInputString)
+})
+additionalIncomeItems.forEach(item => {
+    item.addEventListener('input', checkInputString)
+})
+expensesTitle.addEventListener('input', checkInputString)
+
+
+
+
+
