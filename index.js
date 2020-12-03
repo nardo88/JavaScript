@@ -279,7 +279,6 @@ plusIncome.addEventListener('click', appData.addIncomeBlock)
 // проверка на число
 function checkInputNumber (){
     if (!isNumber(this.value)){
-        alert('Здесь необходимо вводить число');
         this.value = '';
     } 
 }
@@ -291,7 +290,6 @@ expensesAmount.addEventListener('input', checkInputNumber)
 
 function checkInputString (){
     if (!isString(this.value)){
-        alert('Здесь необходимо вводить строчное значение на русском языке');
         this.value = '';
     } 
 }
