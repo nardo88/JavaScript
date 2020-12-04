@@ -15,53 +15,48 @@ const getState = () => {
    return JSON.parse(localStorage.getItem('state'));
 }
 // заполняем state
-let state = getState()
+let state = getState() ? getState() : []
 
 // рендер страницы
 const render = () => {
     todoList.innerHTML = '';
     todoCompleted.innerHTML = '';
-    if (!state){
-        state = []
-        render()
-    } else {
-        state.forEach(item => {
-            const li = document.createElement('li');
-            li.classList.add('todo-item');
-            li.innerHTML = `
-                <span class="text-todo">${item.value}</span>
-                <div class="todo-buttons">
-                    <button data-id=${item.id} class="todo-remove"></button>
-                    <button class="todo-complete"></button>
-                </div>
-            `;
-        
-            if (item.completed){
-                todoCompleted.append(li)
-               
+    state.forEach(item => {
+        const li = document.createElement('li');
+        li.classList.add('todo-item');
+        li.innerHTML = `
+            <span class="text-todo">${item.value}</span>
+            <div class="todo-buttons">
+                <button data-id=${item.id} class="todo-remove"></button>
+                <button class="todo-complete"></button>
+            </div>
+        `;
     
-            } else {
-                todoList.append(li)
-    
-            }
-    
-            // смена статуса todo
-            const todoCompleteBtn = li.querySelector('.todo-complete');
-            todoCompleteBtn.addEventListener('click', () => {
-                item.completed = !item.completed;
-                setState()
-                render()
-            })
-    
+        if (item.completed){
+            todoCompleted.append(li)
+            
+
+        } else {
+            todoList.append(li)
+
+        }
+
+        // смена статуса todo
+        const todoCompleteBtn = li.querySelector('.todo-complete');
+        todoCompleteBtn.addEventListener('click', () => {
+            item.completed = !item.completed;
+            setState()
+            render()
         })
-    }
-   
+
+    })
 }
+   
 
 // добавление нового TODO
 todoControl.addEventListener('submit', e => {
     e.preventDefault()
-    if (headerInput.value){
+    if (headerInput.value ){
         state.push({
             value: headerInput.value,
             completed: false,
