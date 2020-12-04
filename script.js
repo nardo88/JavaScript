@@ -21,35 +21,41 @@ let state = getState()
 const render = () => {
     todoList.innerHTML = '';
     todoCompleted.innerHTML = '';
-    state.forEach(item => {
-        const li = document.createElement('li');
-        li.classList.add('todo-item');
-        li.innerHTML = `
-            <span class="text-todo">${item.value}</span>
-            <div class="todo-buttons">
-                <button data-id=${item.id} class="todo-remove"></button>
-                <button class="todo-complete"></button>
-            </div>
-        `;
+    if (!state){
+        state = []
+        render()
+    } else {
+        state.forEach(item => {
+            const li = document.createElement('li');
+            li.classList.add('todo-item');
+            li.innerHTML = `
+                <span class="text-todo">${item.value}</span>
+                <div class="todo-buttons">
+                    <button data-id=${item.id} class="todo-remove"></button>
+                    <button class="todo-complete"></button>
+                </div>
+            `;
+        
+            if (item.completed){
+                todoCompleted.append(li)
+               
     
-        if (item.completed){
-            todoCompleted.append(li)
-           
-
-        } else {
-            todoList.append(li)
-
-        }
-
-        // смена статуса todo
-        const todoCompleteBtn = li.querySelector('.todo-complete');
-        todoCompleteBtn.addEventListener('click', () => {
-            item.completed = !item.completed;
-            setState()
-            render()
+            } else {
+                todoList.append(li)
+    
+            }
+    
+            // смена статуса todo
+            const todoCompleteBtn = li.querySelector('.todo-complete');
+            todoCompleteBtn.addEventListener('click', () => {
+                item.completed = !item.completed;
+                setState()
+                render()
+            })
+    
         })
-
-    })
+    }
+   
 }
 
 // добавление нового TODO
