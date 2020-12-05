@@ -1,0 +1,127 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    box-sizing: border-box;
+    color: #3f3f3f;
+}
+
+body{
+    background: #e4e4e4;
+}
+.container {
+    max-width: 1024px;
+    margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+    border-radius: 5px;
+    padding: 20px 20px 40px;
+}
+
+.title{
+    margin-bottom: 30px;
+    
+}
+.buttons-wrapper {
+    
+}
+
+.btn{
+    padding: 10px 20px;
+    min-width: 200px;
+    border-radius: 4px;
+    border: 1px solid #0b7e0b;
+    background: #0b7e0b;
+    transition: .3s;
+    color: #fff;
+    cursor: pointer;
+    margin: 10px;
+    outline: none;
+}
+.btn:hover{
+    background: #fff;
+    color: #0b7e0b;
+}
+
+.users {
+    margin: 30px 0 0;
+}
+
+.users__list{
+    list-style-type: none;
+}
+
+
+.users__item{
+    margin: 20px 0;
+    width: 100%;
+    background: #e4e4e4;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 3px #696969;
+    display: flex;
+    align-items: center;
+}
+
+
+.users__name{
+    font-size: 16px;
+    font-weight: 500;
+}
+.users__name:before{
+    content: 'имя: ';
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 12px;
+}
+
+
+.users__surname{
+    font-size: 16px;
+    font-weight: 500;
+
+}
+.users__surname:before{
+    content: 'фамилия: ';
+    display: inline-block;
+    margin-right: 10px;
+    margin-left: 15px;
+    font-size: 12px;
+}
+
+
+.users__date{
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.users__date:before{
+    content: 'дата регистрации: ';
+    display: inline-block;
+    margin-right: 10px;
+    margin-left: 15px;
+    font-size: 12px;
+}
+
+
+.users__delete{
+    width: 30px;
+    height: 30px;
+    background: url(./img/garbage.svg) no-repeat center;
+    background-size: cover;
+    padding: 5px;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    margin-left: 35px;
+    transition: .3s;
+    opacity: .8;
+}
+
+.users__delete:hover{
+    transform: scale(1.2);
+    opacity: 1;
+}
+

@@ -1,46 +1,26 @@
-<!doctype html>
-<html lang="ru">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport"
-				content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>ToDo</title>
-
-	<link rel="stylesheet" type="text/css" href="css/normalize.css">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./script.js" defer></script>
 </head>
 <body>
+    <div class="container">
+        <h1 class="title">Привет, <span class="title-name">Аноним</span></h1>
+        <div class="buttons-wrapper">
+            <button class="btn sign-up">Зарегистрироваться</button>
+            <button class="btn sign-in">Авторизоваться</button>
+        </div>
+        <div class="users">
+            <ul class="users__list">
+             
+            </ul>
+        </div>
+    </div>
+    
 
-<header class="header">
-	<form class="todo-control">
-		<label><input class="header-input" type="text" placeholder="Какие планы?"></label>
-		<button class="header-button" id="add"></button>
-	</form>
-</header>
-
-<div class="todo-container">
-
-	<ul class="todo todo-list" id="todo">
-		<!-- <li class="todo-item">
-			<span class="text-todo">Сварить кофе</span>
-			<div class="todo-buttons">
-				<button class="todo-remove"></button>
-				<button class="todo-complete"></button>
-			</div>
-		</li> -->
-	</ul>
-	<ul class="todo todo-completed" id="completed">
-		<!-- <li class="todo-item">
-			<span class="text-todo">Помыть посуду</span>
-			<div class="todo-buttons">
-				<button class="todo-remove"></button>
-				<button class="todo-complete"></button>
-			</div>
-		</li> -->
-	</ul>
-</div>
-
-    <script src="./script.js"></script>
 </body>
 </html>

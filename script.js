@@ -1,85 +1,114 @@
-const headerInput = document.querySelector('.header-input'),
-headerButton = document.querySelector('.header-button'),
-todoList = document.querySelector('.todo-list'),
-todoControl = document.querySelector('.todo-control'),
-todoContainer = document.querySelector('.todo-container'),
-todoCompleted = document.querySelector('.todo-completed');
+const titleName = document.querySelector('.title-name');
+const signUp = document.querySelector('.sign-up');
+const signIn = document.querySelector('.sign-in');
+const usersList = document.querySelector('.users__list');
 
+let state = JSON.parse(localStorage.getItem('usersData')) ? JSON.parse(localStorage.getItem('usersData')) : []
 
-// отправть в хранилище
-const setState = () => {
-    localStorage.setItem('state', JSON.stringify(state))
+// проверка имени и фамилии
+const chackFullName = (fullName) => {
+    return  fullName !== null && fullName.split(' ').length === 2
 }
-// получить из хранилища
-const getState = () => {
-   return JSON.parse(localStorage.getItem('state'));
+// проверка поля логин
+const chackLogin = (login) => {
+    return  login !== null && login.trim() !== ''
 }
-// заполняем state
-let state = getState() ? getState() : []
 
-// рендер страницы
+// проверка поля пароль
+const chackPassword = (password) => {
+    return  password !== null && password.trim() !== ''
+}
+
+// отрисовка 
 const render = () => {
-    todoList.innerHTML = '';
-    todoCompleted.innerHTML = '';
-    state.forEach(item => {
-        const li = document.createElement('li');
-        li.classList.add('todo-item');
+    usersList.innerHTML = ''
+    state.forEach((item, i) => {
+        let li = document.createElement('li');
+        li.classList.add('users__item');
         li.innerHTML = `
-            <span class="text-todo">${item.value}</span>
-            <div class="todo-buttons">
-                <button data-id=${item.id} class="todo-remove"></button>
-                <button class="todo-complete"></button>
-            </div>
-        `;
-    
-        if (item.completed){
-            todoCompleted.append(li)
-            
-
-        } else {
-            todoList.append(li)
-
-        }
-
-        // смена статуса todo
-        const todoCompleteBtn = li.querySelector('.todo-complete');
-        todoCompleteBtn.addEventListener('click', () => {
-            item.completed = !item.completed;
-            setState()
-            render()
-        })
-
+            <span class="users__name">${item.name}</span>
+            <span class="users__surname">${item.surname}</span>
+            <span class="users__date">${item.date}</span>
+            <button data-id=${item.id} class="users__delete"></button>
+        `
+        usersList.insertAdjacentElement('afterbegin', li)
     })
 }
-   
 
-// добавление нового TODO
-todoControl.addEventListener('submit', e => {
-    e.preventDefault()
-    if (headerInput.value ){
-        state.push({
-            value: headerInput.value,
-            completed: false,
-            id : state.length + 1
-        })
-        headerInput.value = ''
-        setState()
-        render();
-    }
+// регистрация
+const registration = () => {
+    let fullName;
+    let login;
+    let password;
+    let date = new Date();
     
-})
+    let options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timezone: 'UTC',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+      };
+    
 
+    do {fullName = prompt('Введите через пробел ваше имя и фамилию', 'Максим Кузнецов');
+    } while (!chackFullName(fullName))
 
-// удаление элементов
-todoContainer.addEventListener('click', e => {
-    e.preventDefault()
-    const target = e.target.closest('.todo-remove');
-    if (target){
-        let id = +target.dataset.id;
-        state = state.filter(item => item.id !== id)
-      
-    }
-    setState()
+    do {login = prompt('Введите login', 'max666');
+    } while (!chackLogin(login))
+
+    do {password = prompt('Введите пароль', '123456');
+    } while (!chackPassword(password))
+    
+    state.push({
+        name : fullName.split(' ')[0],
+        surname : fullName.split(' ')[1],
+        login: login,
+        password: password,
+        date: date.toLocaleString('ru', options),
+        id: state.length + 1
+    })
+
     render()
+
+    localStorage.setItem('usersData', JSON.stringify(state));
+}
+
+const autentification = () => {
+    let login;
+    let password;
+
+    do {login = prompt('Введите login', 'max666');
+    } while (!chackLogin(login))
+
+    do {password = prompt('Введите пароль', '123456');
+    } while (!chackPassword(password) )
+
+    let findedUser = state.find(item => item.login ===  login && item.password ===  password)
+    
+    if (findedUser){
+        titleName.textContent = findedUser.name;
+    } else {
+        alert('Пользователь не найден');
+        titleName.textContent = 'Аноним';
+    }
+
+}
+
+
+signUp.addEventListener('click', registration);
+signIn.addEventListener('click', autentification);
+
+usersList.addEventListener('click', e => {
+    e.preventDefault();
+    let target = e.target.closest('.users__delete');
+    if (target){
+        state = state.filter(item => item.id != target.dataset.id);
+        render();
+        localStorage.setItem('usersData', JSON.stringify(state));
+    }
 })
+
 render()
