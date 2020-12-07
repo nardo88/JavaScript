@@ -120,6 +120,7 @@ const appData = {
         periodSelect.value = 1;
         titlePeriodAmount.textContent = '1'
         start.style.display = 'block';
+        start.disabled = true
         cancel.style.display = 'none';
         
         income.innerHTML = `
