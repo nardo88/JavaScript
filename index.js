@@ -43,7 +43,8 @@ const periodSelect = document.querySelector('.period-select');
 let expensesItems = document.querySelectorAll('.expenses-items');
 let incomeItems = document.querySelectorAll('.income-items');
 const titlePeriodAmount = document.querySelector('.period-amount')
-
+const income = document.querySelector('.income')
+const expenses = document.querySelector('.expenses')
 const cancel = document.querySelector('#cancel')
 
 
@@ -89,7 +90,6 @@ const appData = {
 
     // запуск приложения
     start() {
-        console.log(this);
         this.budget = +salaryAmount.value
         this.getExpenses();
         this.getIncome();
@@ -121,6 +121,39 @@ const appData = {
         titlePeriodAmount.textContent = '1'
         start.style.display = 'block';
         cancel.style.display = 'none';
+        
+        income.innerHTML = `
+            <div class="income-title title">Дополнительный доход</div>
+            <div class="income-items">
+                <input type="text" class="income-title" placeholder="Наименование">
+                <input type="text" class="income-amount" placeholder="Сумма">
+            </div>
+
+            <button class="btn_plus income_add">+</button>
+        `;
+
+        expenses.innerHTML= `
+            <div class="expenses-title title">Обязательные расходы</div>
+            <div class="expenses-items">
+                <input type="text" class="expenses-title" placeholder="Наименование">
+                <input type="text" class="expenses-amount" placeholder="Сумма">
+            </div>
+
+            <button class="btn_plus expenses_add">+</button>
+        `
+        this.incomeMonth = 0;
+        this.income = {};
+        this.addIncome = [];
+        this.expenses = {};
+        this.addExpenses = [];
+        this.deposit = false;
+        this.percentDeposit = 0;
+        this.moneyDeposit = 0;
+        this.budget = 0;
+        this.budgetDay = 0;
+        this.budgetMonth = 0;
+        this.expensesMonth = 0;
+
     },
     // добавление дополнительных полей обязательных расходров
     addExpensesBlock() {
@@ -210,6 +243,7 @@ const appData = {
         periodSelect.addEventListener('input', () => {
             this.calcSavedMoney()
             incomePeriod.value = this.calcSavedMoney()
+         
         })
         budgetMonth.value = this.budgetMonth;
         budgetDay.value = this.budgetDay;
@@ -291,7 +325,7 @@ salaryAmount.addEventListener('input', () => {
 })
 
 start.addEventListener('click', appData.start.bind(appData));
-cancel.addEventListener('click', appData.reset);
+cancel.addEventListener('click', appData.reset.bind(appData));
 
 periodSelect.addEventListener('input', () => {
     titlePeriodAmount.textContent = periodSelect.value
