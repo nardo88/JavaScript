@@ -44,6 +44,8 @@ let expensesItems = document.querySelectorAll('.expenses-items');
 let incomeItems = document.querySelectorAll('.income-items');
 const titlePeriodAmount = document.querySelector('.period-amount')
 
+const cancel = document.querySelector('#cancel')
+
 
 let isNumber = function (n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
@@ -87,16 +89,38 @@ const appData = {
 
     // запуск приложения
     start() {
-        
-        appData.budget = +salaryAmount.value
-        appData.getExpenses()
-        appData.getIncome();
-        appData.getExpensesMonth();
-        appData.getAddExpenses()
-        appData.getAddIncome()
-        appData.getBudget();
-        appData.showResult();
+        console.log(this);
+        this.budget = +salaryAmount.value
+        this.getExpenses();
+        this.getIncome();
+        this.getExpensesMonth();
+        this.getAddExpenses();
+        this.getAddIncome();
+        this.getBudget();
+        this.showResult();
 
+        // блокируем все input
+        let  inputs = document.querySelectorAll('input[type=text]');
+        inputs.forEach(item => {
+            item.disabled = true;
+        })
+        // скрываем кнопку start
+        start.style.display = 'none';
+
+        // показываем кнопку cancel
+        cancel.style.display = 'block';
+    },
+    reset(){
+        // блокируем все input
+        let  inputs = document.querySelectorAll('input[type=text]');
+        inputs.forEach(item => {
+            item.disabled = false;
+            item.value = '';
+        })
+        periodSelect.value = 1;
+        titlePeriodAmount.textContent = '1'
+        start.style.display = 'block';
+        cancel.style.display = 'none';
     },
     // добавление дополнительных полей обязательных расходров
     addExpensesBlock() {
@@ -165,8 +189,8 @@ const appData = {
 
 
 
-        for (let key in appData.income) {
-            appData.incomeMonth += +appData.income[key]
+        for (let key in this.income) {
+            this.incomeMonth += +this.income[key]
         }
     },
     getAddExpenses() {
@@ -174,7 +198,7 @@ const appData = {
         addExpenses.forEach(item => {
             item = item.trim();
             if (item) {
-                appData.addExpenses.push(item);
+                this.addExpenses.push(item);
             }
         })
     },
@@ -184,7 +208,7 @@ const appData = {
 
 
         periodSelect.addEventListener('input', () => {
-            appData.calcSavedMoney()
+            this.calcSavedMoney()
             incomePeriod.value = this.calcSavedMoney()
         })
         budgetMonth.value = this.budgetMonth;
@@ -200,7 +224,7 @@ const appData = {
         additionalIncomeItems.forEach(item => {
             let itemValue = item.value.trim()
             if (itemValue) {
-                appData.addIncome.push(itemValue)
+                this.addIncome.push(itemValue)
             }
         })
     },
@@ -266,7 +290,8 @@ salaryAmount.addEventListener('input', () => {
     }
 })
 
-start.addEventListener('click', appData.start);
+start.addEventListener('click', appData.start.bind(appData));
+cancel.addEventListener('click', appData.reset);
 
 periodSelect.addEventListener('input', () => {
     titlePeriodAmount.textContent = periodSelect.value
