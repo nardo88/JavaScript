@@ -123,6 +123,7 @@ const appData = {
         start.disabled = true
         cancel.style.display = 'none';
 
+        // возвращаем отображение кнопок с плюсами
         plusExpensis.style.display = 'block';
         plusIncome.style.display = 'block';
 
@@ -131,11 +132,11 @@ const appData = {
         const incomeItems = document.querySelectorAll('.income-items');
 
         for (let i = expensesItems.length - 1; i > 0 ; i--){
-           expensesItems[i].remove()
+           expensesItems[i].remove();
         }
 
         for (let i = incomeItems.length - 1; i > 0 ; i--){
-            incomeItems[i].remove()
+            incomeItems[i].remove();
          }
 
         this.incomeMonth = 0;
@@ -164,8 +165,8 @@ const appData = {
         
          // запрет на ввод не корректных значений значений
          expensesItems.forEach(item => {
-            item.children[0].addEventListener('input', checkInputString)
-            item.children[1].addEventListener('input', checkInputNumber)
+            item.children[0].addEventListener('input', checkInputString);
+            item.children[1].addEventListener('input', checkInputNumber);
         })
 
 
@@ -185,8 +186,8 @@ const appData = {
 
         // запрет на ввод не корректных значений значений
         incomeItems.forEach(item => {
-            item.children[0].addEventListener('input', checkInputString)
-            item.children[1].addEventListener('input', checkInputNumber)
+            item.children[0].addEventListener('input', checkInputString);
+            item.children[1].addEventListener('input', checkInputNumber);
         })
 
         if (incomeItems.length === 3) {
