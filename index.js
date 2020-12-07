@@ -122,26 +122,22 @@ const appData = {
         start.style.display = 'block';
         start.disabled = true
         cancel.style.display = 'none';
-        
-        income.innerHTML = `
-            <div class="income-title title">Дополнительный доход</div>
-            <div class="income-items">
-                <input type="text" class="income-title" placeholder="Наименование">
-                <input type="text" class="income-amount" placeholder="Сумма">
-            </div>
 
-            <button class="btn_plus income_add">+</button>
-        `;
+        plusExpensis.style.display = 'block';
+        plusIncome.style.display = 'block';
 
-        expenses.innerHTML= `
-            <div class="expenses-title title">Обязательные расходы</div>
-            <div class="expenses-items">
-                <input type="text" class="expenses-title" placeholder="Наименование">
-                <input type="text" class="expenses-amount" placeholder="Сумма">
-            </div>
+        // удаление дополнительных полей с помощью цикла
+        const expensesItems = document.querySelectorAll('.expenses-items');
+        const incomeItems = document.querySelectorAll('.income-items');
 
-            <button class="btn_plus expenses_add">+</button>
-        `
+        for (let i = expensesItems.length - 1; i > 0 ; i--){
+           expensesItems[i].remove()
+        }
+
+        for (let i = incomeItems.length - 1; i > 0 ; i--){
+            incomeItems[i].remove()
+         }
+
         this.incomeMonth = 0;
         this.income = {};
         this.addIncome = [];
