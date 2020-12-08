@@ -19,7 +19,7 @@ DomElement.prototype.createElement = function () {
         elem = document.createElement('div');
         elem.className = this.selector.slice(1);
     } else {
-        console.log('указано не корректное значение селектора');
+        
         elem = null
 
     }
@@ -36,6 +36,8 @@ DomElement.prototype.createElement = function () {
         elem.textContent = this.text;
         // добавляем элемент на страницу
         document.body.append(elem)
+    } else {
+        console.log('указано не корректное значение селектора');
     }
 
 }
