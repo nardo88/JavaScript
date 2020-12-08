@@ -48,18 +48,7 @@ const expenses = document.querySelector('.expenses')
 const cancel = document.querySelector('#cancel')
 
 
-let isNumber = function (n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
-}
 
-let isString = (str) => {
-    // добавил регулярное выражение для проверки символов кириллицы
-    if (!parseFloat(str) && str !== null && str.trim() !== '' && /[А-Я-\s-,-.-:-;]$/i.test(str)) {
-        return true
-    } else {
-        return false
-    }
-}
 
 // создание объекта
 function AppData() {
@@ -98,6 +87,14 @@ AppData.prototype.start = function () {
     // показываем кнопку cancel
     cancel.style.display = 'block';
 }
+
+
+
+
+
+
+
+// сброс
 AppData.prototype.reset = function () {
     // блокируем все input
     let inputs = document.querySelectorAll('input[type=text]');
@@ -127,18 +124,13 @@ AppData.prototype.reset = function () {
         incomeItems[i].remove();
     }
 
-    this.incomeMonth = 0;
-    this.income = {};
-    this.addIncome = [];
-    this.expenses = {};
-    this.addExpenses = [];
-    this.deposit = false;
-    this.percentDeposit = 0;
-    this.moneyDeposit = 0;
-    this.budget = 0;
-    this.budgetDay = 0;
-    this.budgetMonth = 0;
-    this.expensesMonth = 0;
+    // сброси значений на дефолтные
+    const newAppData = new AppData()
+
+    for (key in newAppData){
+        this[key] = newAppData[key];
+    }
+
 
 }
 // добавление дополнительных полей обязательных расходров
@@ -286,11 +278,11 @@ AppData.prototype.getInfoDeposit = function () {
 
         do {
             this.percentDeposit = prompt('Какой годовой процент?', '10')
-        } while (!isNumber(this.percentDeposit))
+        } while (!this.isNumber(this.percentDeposit))
 
         do {
             this.moneyDeposit = prompt('Какая сумма заложена?', 10000)
-        } while (!isNumber(this.moneyDeposit))
+        } while (!this.isNumber(this.moneyDeposit))
 
     }
 }
@@ -299,11 +291,11 @@ AppData.prototype.calcSavedMoney = function () {
 }
 
 AppData.prototype.eventsListeners = function (start, cancel, salaryAmount, periodSelect) {
-    const _this = this
+
     // запуск
-    start.addEventListener('click', _this.start.bind(_this));
+    start.addEventListener('click', this.start.bind(this));
     // Сброс
-    cancel.addEventListener('click', _this.reset.bind(_this));
+    cancel.addEventListener('click', this.reset.bind(this));
     // блокируем кнопку старт
     start.disabled = true
     // разблокируем кнопку если ввели текст в полу бюджет
@@ -320,8 +312,8 @@ AppData.prototype.eventsListeners = function (start, cancel, salaryAmount, perio
         titlePeriodAmount.textContent = periodSelect.value
     })
     // добавление блоков по нажатии на плюсики
-    plusExpensis.addEventListener('click', _this.addExpensesBlock)
-    plusIncome.addEventListener('click', _this.addIncomeBlock)
+    plusExpensis.addEventListener('click', this.addExpensesBlock)
+    plusIncome.addEventListener('click', this.addIncomeBlock)
     // проверки полей
     salaryAmount.addEventListener('input', checkInputNumber)
     targetAmount.addEventListener('input', checkInputNumber)
@@ -338,19 +330,21 @@ AppData.prototype.eventsListeners = function (start, cancel, salaryAmount, perio
 
 }
 
+AppData.prototype.isNumber = function (n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+AppData.prototype.isString = function(str) {
+    // добавил регулярное выражение для проверки символов кириллицы
+    if (!parseFloat(str) && str !== null && str.trim() !== '' && /[А-Я-\s-,-.-:-;]$/i.test(str)) {
+        return true
+    } else {
+        return false
+    }
+}
+
 const appData = new AppData()
 appData.eventsListeners(start, cancel, salaryAmount, periodSelect)
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -358,7 +352,7 @@ appData.eventsListeners(start, cancel, salaryAmount, periodSelect)
 //==========================================================================
 // проверка на число
 function checkInputNumber() {
-    if (!isNumber(this.value)) {
+    if (!appData.isNumber(this.value)) {
         this.value = '';
     }
 }
@@ -366,7 +360,7 @@ function checkInputNumber() {
 
 
 function checkInputString() {
-    if (!isString(this.value)) {
+    if (!appData.isString(this.value)) {
         this.value = '';
     }
 }
