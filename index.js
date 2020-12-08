@@ -126,10 +126,15 @@ AppData.prototype.reset = function () {
 
     // сброси значений на дефолтные
     const newAppData = new AppData();
-    const newAppData2 = { ...newAppData };
-    for (key in newAppData2){
-        this[key] = newAppData2[key];
-    }
+    Object.assign(this, newAppData);
+
+
+
+    // const newAppData2 = { ...newAppData };
+    // for (key in newAppData2){
+    //     this[key] = newAppData2[key];
+    // }
+
 
 
 }
