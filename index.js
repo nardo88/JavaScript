@@ -147,8 +147,8 @@ class AppData {
             null
         // проверка полей
         item.forEach(elem => {
-            elem.children[0].addEventListener('input', checkInputString);
-            elem.children[1].addEventListener('input', checkInputNumber);
+            elem.children[0].addEventListener('input', () => {this.checkInputString(elem.children[0])});
+            elem.children[1].addEventListener('input', () => {this.checkInputNumber(elem.children[1])});
         })
         // ограничение количества полей
         if (item.length === 3) {
@@ -377,6 +377,10 @@ class AppData {
         targetAmount.addEventListener('input', () => { this.checkInputNumber(targetAmount)})
         incomeAmount.addEventListener('input', () => {this.checkInputNumber(incomeAmount)})
         expensesAmount.addEventListener('input', () => {this.checkInputNumber(expensesAmount)})
+
+        additionalExpensesItem.addEventListener('input', () => {
+            this.checkInputString(additionalExpensesItem)
+        })
 
         incomeTitle.forEach(item => {
             item.addEventListener('input', () =>{ this.checkInputString(item) })
