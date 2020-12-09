@@ -140,8 +140,11 @@ class AppData {
 
         // запрет на ввод не корректных значений значений
         expensesItems.forEach(item => {
-            item.children[0].addEventListener('input', checkInputString);
-            item.children[1].addEventListener('input', checkInputNumber);
+            item.children[0].addEventListener('input', () => {this.checkInputString(item.children[0])});
+
+            item.children[1].addEventListener('input', () => {
+                this.checkInputNumber(item.children[1]);
+            });
         })
 
 
@@ -149,6 +152,7 @@ class AppData {
             plusExpensis.style.display = 'none';
         }
     }
+
     // добавление дополнительных полей доходов
     addIncomeBlock() {
         const cloneIncomeItems = incomeItems[0].cloneNode(true);
@@ -158,11 +162,18 @@ class AppData {
 
         incomeItems[0].parentNode.insertBefore(cloneIncomeItems, plusIncome);
         incomeItems = document.querySelectorAll('.income-items');
-
+       
         // запрет на ввод не корректных значений значений
         incomeItems.forEach(item => {
-            item.children[0].addEventListener('input', checkInputString);
-            item.children[1].addEventListener('input', checkInputNumber);
+            
+            item.children[0].addEventListener('input', () => { 
+                this.checkInputString( item.children[0] )
+            } );
+
+            item.children[1].addEventListener('input', () => {
+                
+                this.checkInputNumber(item.children[1])
+            });
         })
 
         if (incomeItems.length === 3) {
@@ -311,21 +322,28 @@ class AppData {
             titlePeriodAmount.textContent = periodSelect.value
         })
         // добавление блоков по нажатии на плюсики
-        plusExpensis.addEventListener('click', this.addExpensesBlock)
-        plusIncome.addEventListener('click', this.addIncomeBlock)
+        plusExpensis.addEventListener('click', this.addExpensesBlock.bind(this))
+        plusIncome.addEventListener('click', this.addIncomeBlock.bind(this))
         // проверки полей
-        salaryAmount.addEventListener('input', checkInputNumber)
-        targetAmount.addEventListener('input', checkInputNumber)
-        incomeAmount.addEventListener('input', checkInputNumber)
-        expensesAmount.addEventListener('input', checkInputNumber)
 
+        // поле Месячный доход
+        salaryAmount.addEventListener('input', () => {this.checkInputNumber(salaryAmount)})
+        // цель
+        targetAmount.addEventListener('input', () => {this.checkInputNumber(targetAmount)})
+        // дополнительный доход (сумма)
+        incomeAmount.addEventListener('input', () => {this.checkInputNumber(incomeAmount)})
+        // Обязательные расходы (сумма)
+        expensesAmount.addEventListener('input', () => {this.checkInputNumber(expensesAmount)})
+
+        // поля доп доход (наименование)
         incomeTitle.forEach(item => {
-            item.addEventListener('input', checkInputString)
+            item.addEventListener('input', () => { this.checkInputString(item) })
         })
+
         additionalIncomeItems.forEach(item => {
-            item.addEventListener('input', checkInputString)
+            item.addEventListener('input', this.checkInputString)
         })
-        expensesTitle.addEventListener('input', checkInputString)
+        expensesTitle.addEventListener('input', () => {this.checkInputString(expensesTitle)})
     }
 
     isNumber(n) {
@@ -340,6 +358,18 @@ class AppData {
             return false
         }
     }
+    checkInputNumber(elem) {
+        if (!this.isNumber(elem.value)) {
+            
+            elem.value = '';
+        }
+    }
+
+    checkInputString(elem) {
+        if (!this.isString(elem.value)) {
+            elem.value = '';
+        }
+    }
 }
 
 const appData = new AppData()
@@ -348,18 +378,3 @@ appData.eventsListeners(start, cancel, salaryAmount, periodSelect)
 
 
 
-//==========================================================================
-// проверка на число
-function checkInputNumber() {
-    if (!appData.isNumber(this.value)) {
-        this.value = '';
-    }
-}
-
-
-
-function checkInputString() {
-    if (!appData.isString(this.value)) {
-        this.value = '';
-    }
-}
