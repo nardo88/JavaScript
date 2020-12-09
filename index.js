@@ -111,8 +111,8 @@ class AppData {
         plusIncome.style.display = 'block';
 
         // удаление дополнительных полей с помощью цикла
-        const expensesItems = document.querySelectorAll('.expenses-items');
-        const incomeItems = document.querySelectorAll('.income-items');
+        expensesItems = document.querySelectorAll('.expenses-items');
+        incomeItems = document.querySelectorAll('.income-items');
 
         for (let i = expensesItems.length - 1; i > 0; i--) {
             expensesItems[i].remove();
