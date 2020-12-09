@@ -334,7 +334,9 @@ class AppData {
         incomeAmount.addEventListener('input', () => {this.checkInputNumber(incomeAmount)})
         // Обязательные расходы (сумма)
         expensesAmount.addEventListener('input', () => {this.checkInputNumber(expensesAmount)})
-
+        additionalExpensesItem.addEventListener('input', () => {
+            this.checkInputString(additionalExpensesItem)
+        })
         // поля доп доход (наименование)
         incomeTitle.forEach(item => {
             item.addEventListener('input', () => { this.checkInputString(item) })
