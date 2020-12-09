@@ -46,7 +46,8 @@ const titlePeriodAmount = document.querySelector('.period-amount')
 const income = document.querySelector('.income')
 const expenses = document.querySelector('.expenses')
 const cancel = document.querySelector('#cancel')
-
+// получим все input
+let inputs = document.querySelectorAll('input[type=text]');
 
 
 
@@ -79,7 +80,7 @@ class AppData {
         this.showResult();
 
         // блокируем все input
-        const inputs = document.querySelectorAll('input[type=text]');
+        inputs = document.querySelectorAll('input[type=text]');
         inputs.forEach(item => {
             item.disabled = true;
         })
@@ -94,7 +95,7 @@ class AppData {
     reset() {
 
         // блокируем все input
-        const inputs = document.querySelectorAll('input[type=text]');
+        inputs = document.querySelectorAll('input[type=text]');
         inputs.forEach(item => {
             item.disabled = false;
             item.value = '';
@@ -110,8 +111,8 @@ class AppData {
         plusIncome.style.display = 'block';
 
         // удаление дополнительных полей с помощью цикла
-        const expensesItems = document.querySelectorAll('.expenses-items');
-        const incomeItems = document.querySelectorAll('.income-items');
+        expensesItems = document.querySelectorAll('.expenses-items');
+        incomeItems = document.querySelectorAll('.income-items');
 
         for (let i = expensesItems.length - 1; i > 0; i--) {
             expensesItems[i].remove();
