@@ -70,11 +70,12 @@ class AppData {
     start() {
 
         this.budget = +salaryAmount.value
-        this.getExpenses();
-        this.getIncome();
+        this.getExpInc();
         this.getExpensesMonth();
-        this.getAddExpenses();
-        this.getAddIncome();
+
+        this.getAddExpInc(additionalExpensesItem.value)
+        this.getAddExpInc(additionalIncomeItems)
+
         this.getBudget();
         this.showResult();
 
@@ -125,8 +126,9 @@ class AppData {
         const newAppData = new AppData();
         Object.assign(this, newAppData);
     }
-
+    // ============================================================================================================== НАЧАЛО addExpensesBlock addIncomeBlock=========================
     // добавление дополнительных полей обязательных расходров
+    // старая функция
     addExpensesBlock() {
 
         const cloneExpensesItem = expensesItems[0].cloneNode(true);
@@ -149,6 +151,7 @@ class AppData {
         }
     }
     // добавление дополнительных полей доходов
+    // старая функция
     addIncomeBlock() {
         const cloneIncomeItems = incomeItems[0].cloneNode(true);
         // очищаем поля input у клона
@@ -169,7 +172,42 @@ class AppData {
         }
     }
 
-    // получение перечня обязательных расходов
+    // добавление дополнительных полей и  доходов и срасходов
+    addIncExpBlock(item, button) {
+        // создаем клона
+        const cloneItem = item[0].cloneNode(true);
+        // у клона в дочерних элементах очищаем поля
+        cloneItem.children[0].value = '';
+        cloneItem.children[1].value = '';
+        // вставка клона
+        item[0].parentNode.insertBefore(cloneItem, button)
+        // получаем часть класс оригинала
+        const startStr = item[0].className.split('-')[0]
+        // ищем все элементы с нужным классом
+        item = document.querySelectorAll(`.${startStr}-items`);
+        // переписываем глобальную переменную иначе данные новых полей не запишутся в объект
+        startStr === 'expenses' ? expensesItems = item :
+            startStr === 'income' ? incomeItems = item :
+            null
+        // проверка полей
+        item.forEach(elem => {
+            elem.children[0].addEventListener('input', checkInputString);
+            elem.children[1].addEventListener('input', checkInputNumber);
+        })
+        // ограничение количества полей
+        if (item.length === 3) {
+            button.style.display = 'none';
+        }
+
+    }
+
+    // ============================================================================================КОНЕЦ addExpensesBlock addIncomeBlock=========================
+
+
+
+
+    // получение перечня обязательных расходов==========================================================НАЧАЛО getExpenses getIncome================
+
     getExpenses() {
 
         expensesItems.forEach(item => {
@@ -200,17 +238,84 @@ class AppData {
             this.incomeMonth += +this.income[key]
         }
     }
+    // общий метод который получает и доходы и расходы
+    getExpInc() {
+        const count = item => {
+            const startStr = item.className.split('-')[0]
+            const itemTitle = item.querySelector(`.${startStr}-title`).value
+            const itemAmount = item.querySelector(`.${startStr}-amount`).value
+
+            if (itemTitle && itemAmount) {
+                this[startStr][itemTitle] = itemAmount;
+            }
+
+        }
+
+        expensesItems.forEach(count);
+        incomeItems.forEach(count);
+
+        for (let key in this.income) {
+            this.incomeMonth += +this.income[key]
+        }
+    }
+    //===============================================================================================================  КОНЕЦ getExpenses getIncome==============
 
 
+
+
+    // ==========================================================================================Начало getAddExpenses getAddIncome========================
+    // этот метод разбивает строку на массив
     getAddExpenses() {
         const addExpenses = additionalExpensesItem.value.split(',');
+        // затем пробегается по массиву
         addExpenses.forEach(item => {
             item = item.trim();
+            // если значение не пустое значение пушится в addExpenses
             if (item) {
                 this.addExpenses.push(item);
             }
         })
     }
+
+    // этот метод пробегается по коллекции полей и их значения помещает в массив addIncome
+    getAddIncome() {
+        additionalIncomeItems.forEach(item => {
+            const itemValue = item.value.trim()
+            if (itemValue) {
+                this.addIncome.push(itemValue)
+            }
+        })
+    }
+    // так как функции getAddIncome и getAddExpenses принимают разные типы входных параметров
+    // то нужно в начале создать проверку на тип входных данных
+    getAddExpInc(value) {
+        // если входной параметр - строка
+        if (typeof value === 'string') {
+            // разбиваем строку на массив
+            const addExpenses = value.split(',');
+            // затем пробегается по массиву
+            addExpenses.forEach(item => {
+                item = item.trim();
+                // если значение не пустое значение пушится в addExpenses
+                if (item) {
+                    this.addExpenses.push(item);
+                }
+            })
+        // иначе
+        } else {
+            // входной параметр будет массивом
+            value.forEach(item => {
+                const itemValue = item.value.trim()
+                if (itemValue) {
+                    this.addIncome.push(itemValue)
+                }
+            })
+        }
+
+    }
+
+    // ==========================================================================================Конец getAddExpenses getAddIncome========================
+
 
     // метод вывода данных в поля input
     showResult() {
@@ -228,21 +333,16 @@ class AppData {
         incomePeriod.value = this.calcSavedMoney()
     }
 
-    getAddIncome() {
-        additionalIncomeItems.forEach(item => {
-            const itemValue = item.value.trim()
-            if (itemValue) {
-                this.addIncome.push(itemValue)
-            }
-        })
-    }
+
 
     // метод получения списка обязательных расходов и 
     //суммы денег на эти расходы за месяц
     getExpensesMonth() {
         for (let key in this.expenses) {
+
             this.expensesMonth += +this.expenses[key];
         }
+
     }
 
     // метод получения цифры: доход минус расход
@@ -310,8 +410,12 @@ class AppData {
             titlePeriodAmount.textContent = periodSelect.value
         })
         // добавление блоков по нажатии на плюсики
-        plusExpensis.addEventListener('click', this.addExpensesBlock)
-        plusIncome.addEventListener('click', this.addIncomeBlock)
+        plusExpensis.addEventListener('click', () => {
+            this.addIncExpBlock(expensesItems, plusExpensis)
+        })
+        plusIncome.addEventListener('click', () => {
+            this.addIncExpBlock(incomeItems, plusIncome)
+        })
         // проверки полей
         salaryAmount.addEventListener('input', checkInputNumber)
         targetAmount.addEventListener('input', checkInputNumber)
