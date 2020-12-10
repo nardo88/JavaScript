@@ -294,13 +294,13 @@ class AppData {
             incomePeriod.value = this.calcSavedMoney()
         })
 
-        budgetMonth.value = this.budgetMonth;
-        budgetDay.value = this.budgetDay;
-        expensesMonth.value = this.expensesMonth;
+        budgetMonth.value =this.budgetMonth.toFixed(2);
+        budgetDay.value = this.budgetDay.toFixed(2);;
+        expensesMonth.value = this.expensesMonth.toFixed(2);;
         additionalExpenses.value = this.addExpenses.join(', ');
         additionalIncome.value = this.addIncome.join(', ');
-        targetMonth.value = Math.ceil(this.getTargetMonth());
-        incomePeriod.value = this.calcSavedMoney()
+        targetMonth.value = Math.floor(this.getTargetMonth());
+        incomePeriod.value = Math.floor(this.calcSavedMoney())
     }
 
 
