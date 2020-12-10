@@ -93,6 +93,9 @@ class AppData {
 
         // показываем кнопку cancel
         cancel.style.display = 'block';
+
+        // сохраняем в storage
+        this.setStorage()
     }
 
     // сброс приложения
@@ -135,6 +138,10 @@ class AppData {
         depositAmount.style.display = 'none';
         depositBank.value = '';
         depositAmount.value = '';
+
+
+        // удаление storage
+        this.removeStorage()
     }
     // ============================================================================================================== НАЧАЛО addExpensesBlock addIncomeBlock=========================
 
@@ -341,15 +348,15 @@ class AppData {
         }
     }
 
-   
+
 
 
     calcSavedMoney() {
         return this.budgetMonth * periodSelect.value;
     }
 
-     // метод указания депозита====================================================================ДЕПОЗИТ==============================
-     getInfoDeposit() {
+    // метод указания депозита====================================================================ДЕПОЗИТ==============================
+    getInfoDeposit() {
 
         if (this.deposit) {
             this.percentDeposit = +depositPercent.value;
@@ -357,15 +364,15 @@ class AppData {
         }
     }
 
-    changePercent(){
+    changePercent() {
         const valueSelect = this.value
-        if (valueSelect === 'other'){
+        if (valueSelect === 'other') {
             depositPercent.style.display = 'inline-block'
 
         } else {
             depositPercent.style.display = 'none'
             depositPercent.value = valueSelect
-            
+
         }
     }
 
@@ -463,8 +470,8 @@ class AppData {
 
 
         // проверка поля процента банка
-        depositPercent.addEventListener('change', () => { 
-            if (!this.isNumber(depositPercent.value) || depositPercent.value > 100 || depositPercent.value <= 0){
+        depositPercent.addEventListener('change', () => {
+            if (!this.isNumber(depositPercent.value) || depositPercent.value > 100 || depositPercent.value <= 0) {
                 depositPercent.value = ''
                 depositPercent.style.boxShadow = '0px 0px 5px 5px red';
                 start.disabled = true
@@ -500,7 +507,101 @@ class AppData {
             elem.value = '';
         }
     }
+
+    setStorage() {
+
+        const data = {}
+        data.budgetMonth = budgetMonth.value
+        data.budgetDay = budgetDay.value
+        data.expensesMonth = expensesMonth.value
+        data.additionalExpenses = additionalExpenses.value
+        data.additionalIncome = additionalIncome.value
+        data.targetMonth = targetMonth.value
+        data.incomePeriod = incomePeriod.value
+        data.isLoad = 'true'
+
+        // помещаем данные в localStorage
+        localStorage.setItem('GLO', JSON.stringify(data))
+
+        // помещаем данные в cookie
+        const timeStorage = new Date(2022, 11, 25)
+
+        for (let key in data) {
+            document.cookie = `${key}=${data[key]}; expires=${timeStorage.toGMTString()}`
+        }
+
+        document.cookie = `isLoad=true`
+
+    }
+
+    removeStorage() {
+        localStorage.clear()
+    }
+
+    load() {
+        // получаем данные из localstorage
+        const data = JSON.parse(localStorage.getItem('GLO')) ? JSON.parse(localStorage.getItem('GLO')) : {}
+        // получаем массив cookie
+        let cookies = document.cookie.split(";");
+        // делаем map коллекцию из cookie
+        cookies = cookies.map(item => {
+            const a = item.split('=')
+            return [a[0], a[1]]
+        })
+        
+
+        // создаем map коллекцию из данных localStorage
+        const map = Object.entries(data)
+
+        let count = 0
+        // проверка данных из localStorage и cookie
+        if (map.length > 0){
+            cookies.forEach((val, key) => {
+                // если не равны то выполняем инкремент счетчика
+                count = val[1] === map[key][1] ? false : true;
+                console.log(count);
+                
+            })
+        }
+        
+
+        // если в localStorage есть значение budgetDay и счетчик равен 0
+        if (data.budgetDay && count) {
+            // заполняем поля ввода
+            budgetMonth.value = data.budgetMonth
+            budgetDay.value = data.budgetDay
+            expensesMonth.value = data.expensesMonth
+            additionalExpenses.value = data.additionalExpenses
+            additionalIncome.value = data.additionalIncome
+            targetMonth.value = data.targetMonth
+            incomePeriod.value = data.incomePeriod
+            // блокируем все инпуты
+            const inputs = document.querySelectorAll('input[type=text]');
+            inputs.forEach(item => {
+                item.disabled = true;
+            })
+
+            // скрываем кнопку старт
+            start.style.display = 'none'
+            // показываем кнопку отмена
+            cancel.style.display = 'block'
+        } else {
+            // иначе
+            console.log('Данные не получены');
+            // удаляем все из localStorage
+            this.removeStorage()
+            // чистим cookie установив им прошедшую дату хранения
+            for (let i = 0; i < cookies.length; i++) {
+            let cookie = cookies[i];
+            let eqPos = cookie.indexOf("=");
+            let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            }
+        }
+    }
 }
 
 const appData = new AppData()
 appData.eventsListeners(start, cancel, salaryAmount, periodSelect)
+
+appData.load()
