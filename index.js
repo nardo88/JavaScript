@@ -47,7 +47,10 @@ const income = document.querySelector('.income')
 const expenses = document.querySelector('.expenses')
 const cancel = document.querySelector('#cancel')
 
-
+// елементы для депозита
+const depositBank = document.querySelector('.deposit-bank');
+const depositAmount = document.querySelector('.deposit-amount');
+const depositPercent = document.querySelector('.deposit-percent');
 
 
 class AppData {
@@ -76,6 +79,7 @@ class AppData {
         this.getAddExpInc(additionalExpensesItem.value)
         this.getAddExpInc(additionalIncomeItems)
 
+        this.getInfoDeposit()
         this.getBudget();
         this.showResult();
 
@@ -125,6 +129,12 @@ class AppData {
         // сброси значений на дефолтные
         const newAppData = new AppData();
         Object.assign(this, newAppData);
+
+        depositCheck.checked = false;
+        depositBank.style.display = 'none';
+        depositAmount.style.display = 'none';
+        depositBank.value = '';
+        depositAmount.value = '';
     }
     // ============================================================================================================== НАЧАЛО addExpensesBlock addIncomeBlock=========================
 
@@ -147,8 +157,12 @@ class AppData {
             null
         // проверка полей
         item.forEach(elem => {
-            elem.children[0].addEventListener('input', () => {this.checkInputString(elem.children[0])});
-            elem.children[1].addEventListener('input', () => {this.checkInputNumber(elem.children[1])});
+            elem.children[0].addEventListener('input', () => {
+                this.checkInputString(elem.children[0])
+            });
+            elem.children[1].addEventListener('input', () => {
+                this.checkInputNumber(elem.children[1])
+            });
         })
         // ограничение количества полей
         if (item.length === 3) {
@@ -257,7 +271,7 @@ class AppData {
                     this.addExpenses.push(item);
                 }
             })
-        // иначе
+            // иначе
         } else {
             // входной параметр будет массивом
             value.forEach(item => {
@@ -303,8 +317,10 @@ class AppData {
 
     // метод получения цифры: доход минус расход
     getBudget() {
+
+        const monthDeposit = this.moneyDeposit * (this.percentDeposit / 100);
         // получаем месячный бюджет
-        this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth;
+        this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth + monthDeposit;
         // получаем дневной бюджет
         this.budgetDay = Math.ceil(this.budgetMonth / 30);
     }
@@ -325,26 +341,60 @@ class AppData {
         }
     }
 
-    getInfoDeposit() {
-
-        if (this.deposit) {
-
-            do {
-                this.percentDeposit = prompt('Какой годовой процент?', '10')
-            } while (!this.isNumber(this.percentDeposit))
-
-            do {
-                this.moneyDeposit = prompt('Какая сумма заложена?', 10000)
-            } while (!this.isNumber(this.moneyDeposit))
-
-        }
-    }
+   
 
 
     calcSavedMoney() {
         return this.budgetMonth * periodSelect.value;
     }
 
+     // метод указания депозита====================================================================ДЕПОЗИТ==============================
+     getInfoDeposit() {
+
+        if (this.deposit) {
+            this.percentDeposit = +depositPercent.value;
+            this.moneyDeposit = depositAmount.value;
+        }
+    }
+
+    changePercent(){
+        const valueSelect = this.value
+        if (valueSelect === 'other'){
+            depositPercent.style.display = 'inline-block'
+
+        } else {
+            depositPercent.style.display = 'none'
+            depositPercent.value = valueSelect
+            
+        }
+    }
+
+    // метод изменения checkbox
+    depositHandler() {
+        if (depositCheck.checked) {
+            depositBank.style.display = 'inline-block';
+            depositAmount.style.display = 'inline-block';
+            this.deposit = true;
+
+            depositBank.addEventListener('change', this.changePercent);
+        } else {
+            depositBank.style.display = 'none';
+            depositAmount.style.display = 'none';
+            depositPercent.style.display = 'none'
+            depositBank.value = '';
+            depositAmount.value = '';
+            depositPercent.value = '';
+            depositPercent.style.boxShadow = '';
+            this.deposit = false;
+
+            depositBank.removeEventListener('change', this.changePercent);
+
+
+        }
+    }
+
+
+    // вешаем события======================================================================СОБЫТИЯ--=========================================================
     eventsListeners(start, cancel, salaryAmount, periodSelect) {
         // запуск
         start.addEventListener('click', this.start.bind(this));
@@ -373,28 +423,57 @@ class AppData {
             this.addIncExpBlock(incomeItems, plusIncome)
         })
         // проверки полей
-        salaryAmount.addEventListener('input', () =>{ this.checkInputNumber(salaryAmount)});
-        targetAmount.addEventListener('input', () => { this.checkInputNumber(targetAmount)})
-        incomeAmount.addEventListener('input', () => {this.checkInputNumber(incomeAmount)})
-        expensesAmount.addEventListener('input', () => {this.checkInputNumber(expensesAmount)})
+        salaryAmount.addEventListener('input', () => {
+            this.checkInputNumber(salaryAmount)
+        });
+        targetAmount.addEventListener('input', () => {
+            this.checkInputNumber(targetAmount)
+        })
+        incomeAmount.addEventListener('input', () => {
+            this.checkInputNumber(incomeAmount)
+        })
+        expensesAmount.addEventListener('input', () => {
+            this.checkInputNumber(expensesAmount)
+        })
 
         additionalExpensesItem.addEventListener('input', () => {
             this.checkInputString(additionalExpensesItem)
         })
 
         incomeTitle.forEach(item => {
-            item.addEventListener('input', () =>{ this.checkInputString(item) })
-        })
-
-
-        
-        additionalIncomeItems.forEach(item => {
-            item.addEventListener('input', () =>{
-               
-                 this.checkInputString(item)
+            item.addEventListener('input', () => {
+                this.checkInputString(item)
             })
         })
-        expensesTitle.addEventListener('input', () =>{ this.checkInputString(expensesTitle) })
+
+
+
+        additionalIncomeItems.forEach(item => {
+            item.addEventListener('input', () => {
+
+                this.checkInputString(item)
+            })
+        })
+        expensesTitle.addEventListener('input', () => {
+            this.checkInputString(expensesTitle)
+        })
+
+
+        depositCheck.addEventListener('change', this.depositHandler.bind(this))
+
+
+        // проверка поля процента банка
+        depositPercent.addEventListener('change', () => { 
+            if (!this.isNumber(depositPercent.value) || depositPercent.value > 100 || depositPercent.value <= 0){
+                depositPercent.value = ''
+                depositPercent.style.boxShadow = '0px 0px 5px 5px red';
+                start.disabled = true
+            } else {
+                depositPercent.style.boxShadow = '';
+                start.disabled = false
+                this.percentDeposit = +depositPercent.value;
+            }
+        });
     }
 
     isNumber(n) {
@@ -425,5 +504,3 @@ class AppData {
 
 const appData = new AppData()
 appData.eventsListeners(start, cancel, salaryAmount, periodSelect)
-
-
