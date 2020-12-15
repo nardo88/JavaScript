@@ -43,8 +43,112 @@ window.addEventListener('DOMContentLoaded', () => {
         }  
 
         let updateClockInterval = setInterval(updateClock, 1000)
-    }
+    };
 
     countTimer('16 December  2020');
+
+    // menu
+    const toggleMenu = () => {
+        const btnMenu = document.querySelector('.menu'),
+            menu = document.querySelector('menu'),
+            closeBtn = document.querySelector('.close-btn'),
+            menuItem = menu.querySelectorAll('ul>li>a');
+
+        const actionMenu = () => {
+            menu.classList.toggle('active-menu')
+        }
+
+        btnMenu.addEventListener('click', actionMenu)
+
+        closeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            actionMenu();
+        })
+
+        
+
+
+        menuItem.forEach(item => {
+            item.addEventListener('click', (e) => {
+                // отключаем поведение по умолчанию
+                e.preventDefault()
+                // скрываем меню
+                actionMenu();
+                // получение до куда скролить
+                let ScrollHeigth = document.querySelector(`#${e.target.href.split('#')[1]}`).offsetTop;
+                // скролим плавно
+                window.scrollTo({top: ScrollHeigth, behavior: 'smooth'});
+            })
+        })
+    };
+    toggleMenu();
+
+
+    // popup
+
+    const togglePopup = () => {
+        const popup = document.querySelector('.popup'),
+            popupBtn = document.querySelectorAll('.popup-btn'),
+            popupClose = document.querySelector('.popup-close'),
+            popupContent = document.querySelector('.popup-content');
+
+        const animatePopup = () => {
+            popupContent.style.left = `-50%`;
+            popupContent.style.transform = `translate(-50%)`;
+            let count = -50;
+
+            const move = () => {
+                count +=10;
+                popupContent.style.left = `${count}%`;
+                let animate = requestAnimationFrame(move)
+
+                if (count === 50){
+                    cancelAnimationFrame(animate)
+                }
+            }
+
+            requestAnimationFrame(move)
+        }
+
+        popupBtn.forEach(item => {
+            item.addEventListener('click', () => {
+                popup.style.display = 'block';
+                if (window.innerWidth > 768){
+                    animatePopup()
+                }
+                
+            })
+        })
+
+        popupClose.addEventListener('click', () => {
+            popup.style.display = 'none';
+
+        })
+    }
+
+    togglePopup();
+
+    // scroll
+    const scrollToDown = () => {
+        const link = document.querySelector('main>a');
+        link.addEventListener('click', (e) => {
+            e.preventDefault()
+            let ScrollHeigth = document.querySelector(`#${link.href.split('#')[1]}`).offsetTop;
+            // скролим плавно
+            window.scrollTo({top: ScrollHeigth, behavior: 'smooth'});
+        })
+    }
+    scrollToDown()
+
+
+
+
+
+
+
+
+
+
+
 
 })
