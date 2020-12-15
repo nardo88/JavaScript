@@ -98,7 +98,7 @@ window.addEventListener('DOMContentLoaded', () => {
             let count = -50;
 
             const move = () => {
-                count +=10;
+                count +=5;
                 popupContent.style.left = `${count}%`;
                 let animate = requestAnimationFrame(move)
 
