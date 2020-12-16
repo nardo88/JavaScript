@@ -49,36 +49,36 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // menu
     const toggleMenu = () => {
-        const btnMenu = document.querySelector('.menu'),
-            menu = document.querySelector('menu');
-            
+        const menu = document.querySelector('menu');
+        
+        
 
         // функция открытия и закртия меню
         const actionMenu = () => {
             menu.classList.toggle('active-menu')
         }
 
-        btnMenu.addEventListener('click', actionMenu)
+        // усложненное задание
+        document.body.addEventListener('click', e => {
 
-      
-
-        menu.addEventListener('click', e => {
-            // отменяем стандартное поведение ссылок, что бы якоря не работали и что бы в URL
-            // не появлялись лишние данные
-            e.preventDefault();
-            let target = e.target
-
-            // для крестика
-            if (target.classList.contains('close-btn')){
+            let target = e.target;
+            // клик по бургеру
+            if (target.closest('.menu')){
+                actionMenu()
+            // клик по крестику
+            } else if (target.classList.contains('close-btn')){
+                e.preventDefault();
                 actionMenu();
-            // для элементов меню    
-            } else {
-                if (target.matches('ul>li>a')){
-                    actionMenu();
-                    let ScrollHeigth = document.querySelector(`#${e.target.href.split('#')[1]}`).offsetTop;
-                    // скролим плавно
-                    window.scrollTo({top: ScrollHeigth, behavior: 'smooth'});
-                }
+            // клик по элементам меню
+            } else  if (target.matches('ul>li>a')){
+                e.preventDefault();
+                actionMenu();
+                let ScrollHeigth = document.querySelector(`#${e.target.href.split('#')[1]}`).offsetTop;
+                // скролим плавно
+                window.scrollTo({top: ScrollHeigth, behavior: 'smooth'});
+            // клик мимо меню
+            } else if (target.tagName !== 'MENU'){
+                menu.classList.remove('active-menu');
             }
         })
        
