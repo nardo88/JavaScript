@@ -202,7 +202,7 @@ window.addEventListener('DOMContentLoaded', () => {
         
         // добавление dot в слайдер
         for (let i = 0; i < slide.length; i++){
-            let dotItem = document.createElement('li');
+            const dotItem = document.createElement('li');
             dotItem.classList.add('dot');
             portfolioDots.insertAdjacentElement('afterbegin', dotItem);
         };
