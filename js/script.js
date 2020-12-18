@@ -52,6 +52,7 @@ class Todo {
         li.insertAdjacentHTML('beforeend', `
             <span class="text-todo">${todo.value}</span>
             <div class="todo-buttons">
+                <button class="todo-edit"></button>
                 <button class="todo-remove"></button>
                 <button class="todo-complete"></button>
             </div>`)
@@ -68,17 +69,60 @@ class Todo {
     }
 
     delete(elem){
-        this.todoData.delete(elem.parentElement.key)
-        this.render()
+        elem.parentElement.style.position = 'relative'
+        let count = 0
+        let int = setInterval(() => {
+            count += 5;
+            elem.parentNode.style.left = count + '%';
+            if (count > 100){
+                clearInterval(int)
+    
+                this.todoData.delete(elem.parentElement.key)
+                this.render()
+            }
+        }, 10)
+        
     }
 
     completedItem(elem){
-        this.todoData.forEach((val, key) => {
-            if (key === elem.parentElement.key){
-                val.completed = !val.completed
+        elem.parentElement.style.position = 'relative'
+        let count = 0
+        let int = setInterval(() => {
+            count += 5;
+            elem.parentNode.style.left = count + '%';
+            if (count > 100){
+                clearInterval(int)
+    
+                this.todoData.forEach((val, key) => {
+                    if (key === elem.parentElement.key){
+                        val.completed = !val.completed
+                    }
+                })
+                this.render()
             }
+        }, 10)
+        
+    }
+
+    edit(elem){
+        elem.parentElement.children[0].contentEditable = "true";
+        elem.parentElement.children[0].focus();
+
+        elem.parentElement.children[0].addEventListener('blur', () => {
+            if (elem.parentElement.children[0].textContent){
+                this.todoData.forEach((val, key) => {
+                    if (key === elem.parentElement.key){
+                       val.value = elem.parentElement.children[0].textContent
+                    }
+                })
+                elem.parentElement.children[0].contentEditable = "false";
+                this.render()
+            } else {
+                alert('пустое дело добавить нельзя!');
+                elem.parentElement.children[0].focus();
+            }
+            
         })
-        this.render()
     }
 
     handler(){
@@ -87,7 +131,9 @@ class Todo {
             if (target.classList.contains('todo-remove')){
                 this.delete(target.parentElement)
             } else if (target.classList.contains('todo-complete')){
-                this.completedItem(target.parentElement)
+                this.completedItem(target.parentElement )
+            } else if (target.classList.contains('todo-edit')){
+                this.edit(target.parentElement)
             }
         })
     }
