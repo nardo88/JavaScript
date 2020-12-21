@@ -296,4 +296,34 @@ window.addEventListener('DOMContentLoaded', () => {
     slider();
 
 
+
+    // наша команда (замена картинок)
+
+    const changeImage = () =>{
+        const wrapperImages = document.querySelectorAll('.command__photo');
+        const togleImage = (e) => {
+            let old = e.target.src;
+                e.target.src = e.target.dataset.img;
+                e.target.dataset.img = old;
+        };
+        wrapperImages.forEach(item => {
+            item.addEventListener('mouseenter', togleImage);
+            item.addEventListener('mouseout', togleImage);
+        });
+       
+    }
+    changeImage();
+
+
+    // калькулятор
+
+    const calculator = () => {
+        const calcItem = document.querySelectorAll('.calc-block>input');
+        calcItem.forEach(item => {
+            item.addEventListener('input', () => {
+                item.value = item.value.replace(/\D/, '')
+            })
+        })
+    }
+    calculator();
 })
