@@ -369,7 +369,7 @@ window.addEventListener('DOMContentLoaded', () => {
             return wrapper;
         }
 
-        const f500 = throttle(animateTotalValue, 500);
+        const f500 = throttle(animateTotalValue, 1000);
 
 
         const countSum = () => {
