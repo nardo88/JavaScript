@@ -341,9 +341,36 @@ window.addEventListener('DOMContentLoaded', () => {
                     clearInterval(interval)
                     totalValue.textContent = value
                 }
-            },1)
+            },10)
 
         }
+
+        function throttle(func, ms) {
+            let isThrottled = false,
+                savedArgs,
+                savedThis;
+            function wrapper() {
+                if (isThrottled) {
+                    savedArgs = arguments;
+                    savedThis = this;
+                    return;
+                }
+                func.apply(this, arguments);
+                isThrottled = true;
+                setTimeout(function () {
+                    isThrottled = false;
+                    if (savedArgs) {
+                        wrapper.apply(savedThis, savedArgs);
+                        savedArgs = savedThis = null;
+                    }
+                }, ms);
+            }
+
+            return wrapper;
+        }
+
+        const f500 = throttle(animateTotalValue, 500);
+
 
         const countSum = () => {
 
@@ -364,8 +391,8 @@ window.addEventListener('DOMContentLoaded', () => {
             }
 
             if(typeValue && squareValue){
-                total = price * typeValue * squareValue * countValue * dayValue;
-                animateTotalValue(total)
+                total = Math.floor(price * typeValue * squareValue * countValue * dayValue);
+                f500(total)
             } 
             
         }
