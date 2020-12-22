@@ -379,6 +379,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             if(typeValue && squareValue){
                 total = Math.floor(price * typeValue * squareValue * countValue * dayValue);
+                console.log(total);
                 f5000(total)
             } 
             
