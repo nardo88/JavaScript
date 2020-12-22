@@ -332,6 +332,19 @@ window.addEventListener('DOMContentLoaded', () => {
             })
         })
 
+        const animateTotalValue = value => {
+            let count = 0
+            let interval = setInterval(() => {
+                count+=50
+                totalValue.textContent = count
+                if(count > value){
+                    clearInterval(interval)
+                    totalValue.textContent = value
+                }
+            },1)
+
+        }
+
         const countSum = () => {
 
             let total = 0,
@@ -352,9 +365,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
             if(typeValue && squareValue){
                 total = price * typeValue * squareValue * countValue * dayValue;
+                animateTotalValue(total)
             } 
             
-            totalValue.textContent = total;
         }
 
         calcBlock.addEventListener('change', event => {
