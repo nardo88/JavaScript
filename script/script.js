@@ -356,7 +356,7 @@ window.addEventListener('DOMContentLoaded', () => {
             };
         }
 
-        const f5000 = debounce(animateTotalValue, 500);
+        const f5000 = debounce(animateTotalValue, 1000);
 
 
         const countSum = () => {
