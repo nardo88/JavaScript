@@ -404,7 +404,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const validForm1 = new Validator({
             selector: '#form1',
             pattern: {
-                name : /^[а-яА-Я\s\.\,\!\?]+$/
+                name : /^[а-яА-Я\.\,\!\?]{2,15}\s{0,1}-{0,1}[а-яА-Я\.\,\!\?]{0,15}$/
             },
             method: {
                 'form1-phone': [
@@ -431,7 +431,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const validForm2 = new Validator({
             selector: '#form2',
             pattern: {
-                name : /^[а-яА-Я\s\.\,\!\?]+$/
+                name : /^[а-яА-Я\.\,\!\?]{2,15}\s{0,1}-{0,1}[а-яА-Я\.\,\!\?]{0,15}$/
 
             },
             method: {

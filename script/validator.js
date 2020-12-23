@@ -92,11 +92,34 @@ class Validator{
 
             input.error{
                 border: 2px solid red;
+                box-shadow: 0 0 10px 10px red;
+                
             }
             .validator-error{
                 font-size: 12px;
                 color: red;
                 font-family: sans-serif;
+                position: absolute;
+                bottom: -20px;
+                padding: 5px 10px;
+                background: #fff;
+                border-radius: 5px;
+                border: 2px solid black;
+                z-index: 100;
+                
+            }
+
+            .validator-error:after{
+                content: '';
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                background: #fff;
+                top: -7px;
+                transform: rotate(-135deg);
+                left: 20px;
+                border-right: 2px solid black;
+                border-bottom: 2px solid black;
             }
         `
         document.head.appendChild(style)
