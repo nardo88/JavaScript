@@ -395,4 +395,68 @@ window.addEventListener('DOMContentLoaded', () => {
 
     }
     calculator(100);
+
+
+    // подключаем валидотор
+    const validators = () => {
+
+        // форма оставить заявку
+        const validForm1 = new Validator({
+            selector: '#form1',
+            pattern: {
+                name : /^[а-яА-Я]+$/
+            },
+            method: {
+                'form1-phone': [
+                    ['notEmpty'],
+                    ['pattern', 'phone'],
+                ],
+                'form1-email': [
+                    ['notEmpty'],
+                    ['pattern', 'email'],
+
+                ],
+                'form1-name': [
+                    ['notEmpty'],
+                    ['pattern', 'name'],
+
+                ],
+            }
+        })
+
+        validForm1.init();
+
+
+        // Остались вопросы
+        const validForm2 = new Validator({
+            selector: '#form2',
+            pattern: {
+                name : /^[а-яА-Я]+$/
+            },
+            method: {
+                'form2-phone': [
+                    ['notEmpty'],
+                    ['pattern', 'phone'],
+                ],
+                'form2-email': [
+                    ['notEmpty'],
+                    ['pattern', 'email'],
+
+                ],
+                'form2-name': [
+                    ['notEmpty'],
+                    ['pattern', 'name'],
+
+                ],
+                'form2-message': [
+                    ['notEmpty'],
+                    ['pattern', 'name'],
+
+                ],
+            }
+        })
+
+        validForm2.init();
+    }
+    validators()
 })
