@@ -17,17 +17,25 @@ class Validator{
            
             this.elementsForm.forEach(item => { 
                 this.checkIt({target: item})
+
             });
 
             if (this.error.size){
                 e.preventDefault()
+                
             }
 
             
+            return 'error'
         })
 
        
     }
+
+    sayError() {
+        return this.error
+    }
+
 
     isValid(elem){
         const validatorMethod = {
