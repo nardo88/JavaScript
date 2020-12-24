@@ -520,6 +520,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         const form = document.getElementById('form1');
         const statusMessage = document.createElement('div');
+        const loader = document.querySelector('.loader');
 
 
         form.addEventListener('submit', (e) => {
@@ -549,11 +550,13 @@ window.addEventListener('DOMContentLoaded', () => {
             const request = new XMLHttpRequest();
 
             request.addEventListener('readystatechange', () => {
-               
+                loader.classList.add('open')
                 if (request.readyState !== 4) {
                     return
                 }
                 if (request.status === 200) {
+                    loader.classList.remove('open')
+
                     outputData()
                     
                 } else {
