@@ -409,20 +409,6 @@ window.addEventListener('DOMContentLoaded', () => {
     calculator(100);
 
 
-    // подключаем валидотор
-    const validators = () => {
-
-        // форма оставить заявку
-
-
-
-        // Остались вопросы
-
-
-        // popup
-
-    }
-    validators()
 
 
     // send ajax FORM
