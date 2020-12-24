@@ -14,7 +14,11 @@ class Validator{
         this.setPattern();
         this.elementsForm.forEach(item => item.addEventListener('change', this.checkIt.bind(this)))
         this.form.addEventListener('submit', e => {
-            this.elementsForm.forEach(item =>  this.checkIt({target: item}));
+           
+            this.elementsForm.forEach(item => { 
+                this.checkIt({target: item})
+            });
+
             if (this.error.size){
                 e.preventDefault()
             }
@@ -52,6 +56,7 @@ class Validator{
     }
 
     checkIt(e) {
+        
         const target = e.target;
         if (this.isValid(target)){
             this.showSuccess(target)
@@ -73,6 +78,7 @@ class Validator{
         errorDiv.textContent = 'Ошибка в этом поле';
         errorDiv.classList.add('validator-error');
         elem.insertAdjacentElement('afterend', errorDiv);
+        
     }
 
     showSuccess(elem) {
@@ -131,7 +137,7 @@ class Validator{
         }
 
         if (!this.pattern.email){
-            this.pattern.email = /\w+@\w+\.\w{2,3}/g;
+            this.pattern.email = /\w+@\w+\.\w{2,3}/;
         }
 
     }
