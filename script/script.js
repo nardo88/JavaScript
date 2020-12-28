@@ -507,7 +507,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const elementsForm = [...form.elements].filter(item => item.tagName.toLowerCase() !== 'button' && item.type !== 'button').forEach(item => item.value = '')
         }
 
-        
+
         const loader = document.querySelector('.loader');
 
         // функция отправки формы
@@ -535,9 +535,9 @@ window.addEventListener('DOMContentLoaded', () => {
             })
         }
 
-        function sendForm(form, notValidate, cb){
+        function sendForm(form, notValidate, cb) {
             loader.classList.add('open');
-            if (!notValidate){
+            if (!notValidate) {
                 const formData = new FormData(form)
                 let body = {};
                 // заполняем объект body
@@ -547,7 +547,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 postData(body)
                     .then(() => {
                         loader.classList.remove('open')
-                        if (cb){
+                        if (cb) {
                             cb('Спасибо! Мы скоро с вами свяжемся!')
                         } else {
                             alert('ваше сообщение отправлено');
@@ -556,7 +556,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     })
                     .catch(error => {
                         loader.classList.remove('open')
-                        if (cb){
+                        if (cb) {
                             cb('Что то пошло не так')
                         } else {
                             alert('ваше сообщение не отправлено');
@@ -567,13 +567,13 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         // обрабатываем форму в main
         const form = document.getElementById('form1');
+        const statusMessage = document.createElement('div');
+        form.appendChild(statusMessage);
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             sendForm(form, validForm1.sayError().size, (text) => {
-                const statusMessage = document.createElement('div');
                 statusMessage.textContent = text
-                form.appendChild(statusMessage)
             });
         });
 
