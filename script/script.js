@@ -575,15 +575,15 @@ window.addEventListener('DOMContentLoaded', () => {
             event.preventDefault();
             const target = event.target
             if (target.matches('#form1')){
-                sendForm(form, validForm1.sayError().size, (text) => {
+                sendForm(target, validForm1.sayError().size, (text) => {
                             statusMessage.textContent = text
                         });
             }
             if (target.matches('#form2')){
-                sendForm(form2, validForm2.sayError().size);
+                sendForm(target, validForm2.sayError().size);
             }
             if (target.matches('#form3')){
-                sendForm(form3, validForm3.sayError().size);
+                sendForm(target, validForm3.sayError().size);
             }
         })
 
