@@ -440,6 +440,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         })
         validForm1.init();
+
         // валидация формы popup
         const validForm3 = new Validator({
             selector: '#form3',
@@ -506,19 +507,12 @@ window.addEventListener('DOMContentLoaded', () => {
             const elementsForm = [...form.elements].filter(item => item.tagName.toLowerCase() !== 'button' && item.type !== 'button').forEach(item => item.value = '')
         }
 
-        // обрабатываем форму в main
-        const errorMessage = 'Что то пошло не так',
-            loadMessage = 'Загрузка...',
-            successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
-
-        const form = document.getElementById('form1');
-        const statusMessage = document.createElement('div');
+        
         const loader = document.querySelector('.loader');
 
         // функция отправки формы
         function postData(body) {
             return new Promise((resolve, reject) => {
-                loader.classList.add('open');
                 // создаем XHR
                 const request = new XMLHttpRequest();
                 // открываем соединение
@@ -530,10 +524,8 @@ window.addEventListener('DOMContentLoaded', () => {
                     }
                     if (request.status === 200) {
                         resolve();
-                        loader.classList.remove('open')
                     } else {
                         reject(request.status);
-                        loader.classList.remove('open')
                     }
                 });
                 // создаем заоловок
@@ -543,14 +535,9 @@ window.addEventListener('DOMContentLoaded', () => {
             })
         }
 
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            // получаем флаг валидна ли форма
-            let rez = validForm1.sayError();
-
-            if (!rez.size) {
-                form.appendChild(statusMessage);
-                statusMessage.textContent = loadMessage;
+        function sendForm(form, notValidate, cb){
+            loader.classList.add('open');
+            if (!notValidate){
                 const formData = new FormData(form)
                 let body = {};
                 // заполняем объект body
@@ -559,68 +546,53 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
                 postData(body)
                     .then(() => {
-                        statusMessage.textContent = successMessage;
+                        loader.classList.remove('open')
+                        if (cb){
+                            cb('Спасибо! Мы скоро с вами свяжемся!')
+                        } else {
+                            alert('ваше сообщение отправлено');
+                        }
                         clearInput(form);
                     })
                     .catch(error => {
-                        statusMessage.textContent = errorMessage;
-                        console.log(error);
-                    })
+                        loader.classList.remove('open')
+                        if (cb){
+                            cb('Что то пошло не так')
+                        } else {
+                            alert('ваше сообщение не отправлено');
+                        }
+                        console.log(error)
+                    });
             }
+        }
+        // обрабатываем форму в main
+        const form = document.getElementById('form1');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            sendForm(form, validForm1.sayError().size, (text) => {
+                const statusMessage = document.createElement('div');
+                statusMessage.textContent = text
+                form.appendChild(statusMessage)
+            });
+        });
+
+        // обрабатываем форму вопросы
+        const form2 = document.getElementById('form2');
+
+        form2.addEventListener('submit', (e) => {
+            e.preventDefault();
+            sendForm(form2, validForm2.sayError().size);
         });
 
 
         // обрабатываем форму popup
-
         const form3 = document.getElementById('form3');
-        // слушатель формы
-        form3.addEventListener('submit', e => {
+
+        form3.addEventListener('submit', (e) => {
             e.preventDefault();
-            let rez = validForm3.sayError()
-            if (!rez.size) {
-                // получаем данные формы
-                const formData3 = new FormData(form3)
-                let body = {};
-                // заполняем объект body
-                for (let val of formData3.entries()) {
-                    body[val[0]] = val[1];
-                }
-                // вызываем функцию отправки данных
-                postData(body)
-                    .then(() => {
-                        alert('ваше сообщение отправлено');
-                        clearInput(form3)
-                    })
-                    .catch(error => console.error(error));
-
-            }
-        })
-
-        // обрабатываем форму вопросы
-
-        const form2 = document.getElementById('form2');
-
-        form2.addEventListener('submit', e => {
-            e.preventDefault();
-            let rez = validForm2.sayError();
-            if (!rez.size) {
-                // получаем данные формы
-                const formData = new FormData(form2)
-                let body = {};
-                // заполняем объект body
-                for (let val of formData.entries()) {
-                    body[val[0]] = val[1];
-                }
-                postData(body)
-                    .then(() => {
-                        alert('ваше сообщение отправлено');
-                        clearInput(form2)
-                    })
-                    .catch(error => console.error(error))
-            }
-        })
-
-
+            sendForm(form3, validForm3.sayError().size);
+        });
 
     };
     sendForm();
