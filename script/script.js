@@ -586,8 +586,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         document.addEventListener('submit', (event) => {
             event.preventDefault();
-            const target = event.target
-            sendForm(target);
+            sendForm(event.target);
         })
 
     };
