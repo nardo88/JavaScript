@@ -413,7 +413,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // send ajax FORM
 
-    const sendForm = () => {
+    const sendingForm = () => {
 
         // валидация первой формы 
         const validForm1 = new Validator({
@@ -504,7 +504,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         // очищение input
         function clearInput(form) {
-            const elementsForm = [...form.elements].filter(item => item.tagName.toLowerCase() !== 'button' && item.type !== 'button').forEach(item => item.value = '')
+            [...form.elements].filter(item => item.tagName.toLowerCase() !== 'button' && item.type !== 'button').forEach(item => item.value = '')
         }
 
 
@@ -534,7 +534,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 request.send(JSON.stringify(body))
             })
         }
-
+        
         function sendForm(form, notValidate, cb) {
             loader.classList.add('open');
             if (!notValidate) {
@@ -595,6 +595,6 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
     };
-    sendForm();
+    sendingForm();
 
 })
