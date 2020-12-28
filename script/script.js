@@ -535,7 +535,20 @@ window.addEventListener('DOMContentLoaded', () => {
             })
         }
         
-        function sendForm(form, notValidate, cb) {
+        function sendForm(form) {
+            let notValidate = 0
+            const id = form.id;
+            switch(id){
+                case 'form1':
+                    notValidate =  validForm1.sayError().size;
+                    break;
+                case 'form2':
+                    notValidate =  validForm2.sayError().size;
+                    break;
+                case 'form3':
+                    notValidate =  validForm3.sayError().size;
+                    break;
+            }
             loader.classList.add('open');
             if (!notValidate) {
                 const formData = new FormData(form)
@@ -547,8 +560,8 @@ window.addEventListener('DOMContentLoaded', () => {
                 postData(body)
                     .then(() => {
                         loader.classList.remove('open')
-                        if (cb) {
-                            cb('Спасибо! Мы скоро с вами свяжемся!')
+                        if (id === 'form1') {
+                            statusMessage.textContent = 'Спасибо! Мы скоро с вами свяжемся!';
                         } else {
                             alert('ваше сообщение отправлено');
                         }
@@ -556,8 +569,8 @@ window.addEventListener('DOMContentLoaded', () => {
                     })
                     .catch(error => {
                         loader.classList.remove('open')
-                        if (cb) {
-                            cb('Что то пошло не так')
+                        if (id === 'form1') {
+                            statusMessage.textContent = 'Что то пошло не так';
                         } else {
                             alert('ваше сообщение не отправлено');
                         }
@@ -574,17 +587,18 @@ window.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('submit', (event) => {
             event.preventDefault();
             const target = event.target
-            if (target.matches('#form1')){
-                sendForm(target, validForm1.sayError().size, (text) => {
-                            statusMessage.textContent = text
-                        });
-            }
-            if (target.matches('#form2')){
-                sendForm(target, validForm2.sayError().size);
-            }
-            if (target.matches('#form3')){
-                sendForm(target, validForm3.sayError().size);
-            }
+            sendForm(target);
+            // if (target.matches('#form1')){
+            //     sendForm(target, validForm1.sayError().size, (text) => {
+            //                 statusMessage.textContent = text
+            //             });
+            // }
+            // if (target.matches('#form2')){
+            //     sendForm(target, validForm2.sayError().size);
+            // }
+            // if (target.matches('#form3')){
+            //     sendForm(target, validForm3.sayError().size);
+            // }
         })
 
     };
