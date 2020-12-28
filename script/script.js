@@ -588,17 +588,6 @@ window.addEventListener('DOMContentLoaded', () => {
             event.preventDefault();
             const target = event.target
             sendForm(target);
-            // if (target.matches('#form1')){
-            //     sendForm(target, validForm1.sayError().size, (text) => {
-            //                 statusMessage.textContent = text
-            //             });
-            // }
-            // if (target.matches('#form2')){
-            //     sendForm(target, validForm2.sayError().size);
-            // }
-            // if (target.matches('#form3')){
-            //     sendForm(target, validForm3.sayError().size);
-            // }
         })
 
     };
