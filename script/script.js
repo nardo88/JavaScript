@@ -439,76 +439,8 @@ window.addEventListener('DOMContentLoaded', () => {
                 ],
             }
         })
-
         validForm1.init();
-
-
-        // обрабатываем форму в main
-        const errorMessage = 'Что то пошло не так',
-            loadMessage = 'Загрузка...',
-            successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
-
-        const form = document.getElementById('form1');
-        const statusMessage = document.createElement('div');
-        const loader = document.querySelector('.loader');
-
-
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            let rez = validForm1.sayError();
-
-            if (!rez.size) {
-                form.appendChild(statusMessage);
-                statusMessage.textContent = loadMessage;
-                const formData = new FormData(form)
-                let body = {};
-                // заполняем объект body
-                for (let val of formData.entries()) {
-                    body[val[0]] = val[1];
-                }
-                postData(body, () => {
-                    statusMessage.textContent = successMessage;
-                    clearInput(form)
-                }, (error) => {
-                    statusMessage.textContent = errorMessage;
-                    console.log(error);
-                })
-            }
-
-
-        });
-
-        function postData(body, outputData, errorData) {
-            // создаем XHR
-            const request = new XMLHttpRequest();
-
-            request.addEventListener('readystatechange', () => {
-                loader.classList.add('open')
-                if (request.readyState !== 4) {
-                    return
-                }
-                if (request.status === 200) {
-                    loader.classList.remove('open')
-
-                    outputData()
-
-                } else {
-                    errorData(request.status)
-
-                }
-            });
-            // открываем соединение
-            request.open('POST', './server.php');
-            // создаем заоловок
-            request.setRequestHeader('Content-Type', 'application/json');
-            // получаем данные из формы
-
-            // отправляем запрос
-            request.send(JSON.stringify(body))
-        }
-
         // валидация формы popup
-
         const validForm3 = new Validator({
             selector: '#form3',
             pattern: {
@@ -524,61 +456,20 @@ window.addEventListener('DOMContentLoaded', () => {
                 'form3-email': [
                     ['notEmpty'],
                     ['pattern', 'email'],
-
                 ],
                 'form3-name': [
                     ['notEmpty'],
                     ['pattern', 'name'],
-
                 ],
                 'form3-message': [
                     ['notEmpty'],
                     ['pattern', 'name'],
-
                 ],
             }
         })
-
         validForm3.init();
-        // обрабатываем форму popup
-
-        const form3 = document.getElementById('form3');
-        // слушатель формы
-        form3.addEventListener('submit', e => {
-            e.preventDefault();
-            let rez = validForm3.sayError()
-
-
-            if (!rez.size) {
-                // получаем данные формы
-                const formData3 = new FormData(form3)
-                let body = {};
-                // заполняем объект body
-                for (let val of formData3.entries()) {
-                    body[val[0]] = val[1];
-                }
-                // вызываем функцию отправки данных
-                postData(body, () => {
-                    alert('ваше сообщение отправлено');
-                    clearInput(form3)
-                }, () => {
-                    console.log('rerror')
-                })
-            }
-
-
-        })
-
-        // очищение input
-        function clearInput(form) {
-            const elementsForm = [...form.elements].filter(item => item.tagName.toLowerCase() !== 'button' && item.type !== 'button').forEach(item => item.value = '')
-        }
-
-
-
 
         // валидация form 2
-
         const validForm2 = new Validator({
             selector: '#form2',
             pattern: {
@@ -608,8 +499,103 @@ window.addEventListener('DOMContentLoaded', () => {
                 ],
             }
         })
-
         validForm2.init();
+
+        // очищение input
+        function clearInput(form) {
+            const elementsForm = [...form.elements].filter(item => item.tagName.toLowerCase() !== 'button' && item.type !== 'button').forEach(item => item.value = '')
+        }
+
+        // обрабатываем форму в main
+        const errorMessage = 'Что то пошло не так',
+            loadMessage = 'Загрузка...',
+            successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
+
+        const form = document.getElementById('form1');
+        const statusMessage = document.createElement('div');
+        const loader = document.querySelector('.loader');
+
+        // функция отправки формы
+        function postData(body) {
+            return new Promise((resolve, reject) => {
+                loader.classList.add('open');
+                // создаем XHR
+                const request = new XMLHttpRequest();
+                // открываем соединение
+                request.open('POST', './server.php');
+                // слушаем изменение readyState
+                request.addEventListener('readystatechange', () => {
+                    if (request.readyState !== 4) {
+                        return
+                    }
+                    if (request.status === 200) {
+                        resolve();
+                        loader.classList.remove('open')
+                    } else {
+                        reject(request.status);
+                        loader.classList.remove('open')
+                    }
+                });
+                // создаем заоловок
+                request.setRequestHeader('Content-Type', 'application/json');
+                // отправляем запрос
+                request.send(JSON.stringify(body))
+            })
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // получаем флаг валидна ли форма
+            let rez = validForm1.sayError();
+
+            if (!rez.size) {
+                form.appendChild(statusMessage);
+                statusMessage.textContent = loadMessage;
+                const formData = new FormData(form)
+                let body = {};
+                // заполняем объект body
+                for (let val of formData.entries()) {
+                    body[val[0]] = val[1];
+                }
+                postData(body)
+                    .then(() => {
+                        statusMessage.textContent = successMessage;
+                        clearInput(form);
+                    })
+                    .catch(error => {
+                        statusMessage.textContent = errorMessage;
+                        console.log(error);
+                    })
+            }
+        });
+
+
+        // обрабатываем форму popup
+
+        const form3 = document.getElementById('form3');
+        // слушатель формы
+        form3.addEventListener('submit', e => {
+            e.preventDefault();
+            let rez = validForm3.sayError()
+            if (!rez.size) {
+                // получаем данные формы
+                const formData3 = new FormData(form3)
+                let body = {};
+                // заполняем объект body
+                for (let val of formData3.entries()) {
+                    body[val[0]] = val[1];
+                }
+                // вызываем функцию отправки данных
+                postData(body)
+                    .then(() => {
+                        alert('ваше сообщение отправлено');
+                        clearInput(form3)
+                    })
+                    .catch(error => console.error(error));
+
+            }
+        })
+
         // обрабатываем форму вопросы
 
         const form2 = document.getElementById('form2');
@@ -617,7 +603,6 @@ window.addEventListener('DOMContentLoaded', () => {
         form2.addEventListener('submit', e => {
             e.preventDefault();
             let rez = validForm2.sayError();
-
             if (!rez.size) {
                 // получаем данные формы
                 const formData = new FormData(form2)
@@ -626,16 +611,13 @@ window.addEventListener('DOMContentLoaded', () => {
                 for (let val of formData.entries()) {
                     body[val[0]] = val[1];
                 }
-                // вызываем функцию отправки данных
-                postData(body, () => {
-                    alert('ваше сообщение отправлено');
-                    clearInput(form2)
-                }, () => {
-                    console.log('rerror')
-                })
+                postData(body)
+                    .then(() => {
+                        alert('ваше сообщение отправлено');
+                        clearInput(form2)
+                    })
+                    .catch(error => console.error(error))
             }
-
-
         })
 
 
