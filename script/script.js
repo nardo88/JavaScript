@@ -570,29 +570,22 @@ window.addEventListener('DOMContentLoaded', () => {
         const statusMessage = document.createElement('div');
         form.appendChild(statusMessage);
 
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            sendForm(form, validForm1.sayError().size, (text) => {
-                statusMessage.textContent = text
-            });
-        });
 
-        // обрабатываем форму вопросы
-        const form2 = document.getElementById('form2');
-
-        form2.addEventListener('submit', (e) => {
-            e.preventDefault();
-            sendForm(form2, validForm2.sayError().size);
-        });
-
-
-        // обрабатываем форму popup
-        const form3 = document.getElementById('form3');
-
-        form3.addEventListener('submit', (e) => {
-            e.preventDefault();
-            sendForm(form3, validForm3.sayError().size);
-        });
+        document.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const target = event.target
+            if (target.matches('#form1')){
+                sendForm(form, validForm1.sayError().size, (text) => {
+                            statusMessage.textContent = text
+                        });
+            }
+            if (target.matches('#form2')){
+                sendForm(form2, validForm2.sayError().size);
+            }
+            if (target.matches('#form3')){
+                sendForm(form3, validForm3.sayError().size);
+            }
+        })
 
     };
     sendingForm();
