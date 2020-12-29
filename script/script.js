@@ -536,8 +536,9 @@ window.addEventListener('DOMContentLoaded', () => {
                     notValidate =  validForm3.sayError().size;
                     break;
             }
-            loader.classList.add('open');
+            
             if (!notValidate) {
+                loader.classList.add('open');
                 const formData = new FormData(form)
                 let body = {};
                 // заполняем объект body
@@ -566,6 +567,9 @@ window.addEventListener('DOMContentLoaded', () => {
                         }
                         console.log(error)
                     });
+            }
+            else{
+                alert('Заполните форму')
             }
         }
         // обрабатываем форму в main
