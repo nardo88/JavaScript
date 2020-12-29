@@ -512,27 +512,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
         // функция отправки формы
         function postData(body) {
-            return new Promise((resolve, reject) => {
-                // создаем XHR
-                const request = new XMLHttpRequest();
-                // открываем соединение
-                request.open('POST', './server.php');
-                // слушаем изменение readyState
-                request.addEventListener('readystatechange', () => {
-                    if (request.readyState !== 4) {
-                        return
-                    }
-                    if (request.status === 200) {
-                        resolve();
-                    } else {
-                        reject(request.status);
-                    }
-                });
-                // создаем заоловок
-                request.setRequestHeader('Content-Type', 'application/json');
-                // отправляем запрос
-                request.send(JSON.stringify(body))
+            return fetch('./server.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
             })
+           
         }
         
         function sendForm(form) {
@@ -558,8 +545,11 @@ window.addEventListener('DOMContentLoaded', () => {
                     body[val[0]] = val[1];
                 }
                 postData(body)
-                    .then(() => {
+                    .then(response => {
                         loader.classList.remove('open')
+                        if(response.status !== 200){
+                            throw new Error('Что то пошло не так')
+                        }
                         if (id === 'form1') {
                             statusMessage.textContent = 'Спасибо! Мы скоро с вами свяжемся!';
                         } else {
