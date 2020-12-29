@@ -568,9 +568,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         console.log(error)
                     });
             }
-            else{
-                alert('Заполните форму')
-            }
+            
         }
         // обрабатываем форму в main
         const form = document.getElementById('form1');
