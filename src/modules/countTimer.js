@@ -40,7 +40,7 @@ function countTimer(deadLine) {
 
     }
 
-    let updateClockInterval = setInterval(updateClock, 1)
+    let updateClockInterval = setInterval(updateClock, 1000)
     updateClock()
 };
 
