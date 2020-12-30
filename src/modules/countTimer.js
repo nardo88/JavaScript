@@ -40,7 +40,7 @@ function countTimer(deadLine) {
 
     }
 
-    let updateClockInterval = setInterval(updateClock, 10)
+    let updateClockInterval = setInterval(updateClock, 1)
 };
 
 export default countTimer
