@@ -30,7 +30,8 @@ const toggleMenu = () => {
                 behavior: 'smooth'
             });
             // клик мимо меню
-        } else if (target.tagName !== 'MENU') {
+        } else if (target.tagName !== 'MENU' && target.tagName !== 'LI') {
+            
             menu.classList.remove('active-menu');
         }
     })

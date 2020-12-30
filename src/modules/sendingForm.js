@@ -106,24 +106,35 @@ const sendingForm = () => {
             },
             body: JSON.stringify(body)
         })
-       
     }
-    
+
+    const showMessage = (form, text) => {
+        const statusMessage = document.createElement('div');
+        statusMessage.style.color ='#fff';
+        statusMessage.textContent = text
+        form.appendChild(statusMessage);
+
+        setTimeout(() => {
+            form.removeChild(statusMessage);
+        }, 7000)
+    }
+
     function sendForm(form) {
         let notValidate = 0
+        
         const id = form.id;
-        switch(id){
+        switch (id) {
             case 'form1':
-                notValidate =  validForm1.sayError().size;
+                notValidate = validForm1.sayError().size;
                 break;
             case 'form2':
-                notValidate =  validForm2.sayError().size;
+                notValidate = validForm2.sayError().size;
                 break;
             case 'form3':
-                notValidate =  validForm3.sayError().size;
+                notValidate = validForm3.sayError().size;
                 break;
         }
-        
+
         if (!notValidate) {
             loader.classList.add('open');
             const formData = new FormData(form)
@@ -135,32 +146,22 @@ const sendingForm = () => {
             postData(body)
                 .then(response => {
                     loader.classList.remove('open')
-                    if(response.status !== 200){
+                    if (response.status !== 200) {
                         throw new Error('Что то пошло не так')
                     }
-                    if (id === 'form1') {
-                        statusMessage.textContent = 'Спасибо! Мы скоро с вами свяжемся!';
-                    } else {
-                        alert('ваше сообщение отправлено');
-                    }
+                    showMessage(form, 'Спасибо! Мы скоро с вами свяжемся!')
                     clearInput(form);
                 })
                 .catch(error => {
                     loader.classList.remove('open')
-                    if (id === 'form1') {
-                        statusMessage.textContent = 'Что то пошло не так';
-                    } else {
-                        alert('ваше сообщение не отправлено');
-                    }
-                    console.log(error)
+                    showMessage(form, 'Что то пошло не так')
                 });
         }
-        
+
     }
     // обрабатываем форму в main
-    const form = document.getElementById('form1');
-    const statusMessage = document.createElement('div');
-    form.appendChild(statusMessage);
+    // const form = document.getElementById('form1');
+
 
 
     document.addEventListener('submit', (event) => {

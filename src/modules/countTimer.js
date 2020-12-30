@@ -19,7 +19,6 @@ function countTimer(deadLine) {
         };
     }
 
-
     function updateClock() {
         let timer = getTimeRemaining();
         // если акция закончилась то выключаем таймер
@@ -41,7 +40,7 @@ function countTimer(deadLine) {
 
     }
 
-    let updateClockInterval = setInterval(updateClock, 1000)
+    let updateClockInterval = setInterval(updateClock, 10)
 };
 
 export default countTimer
